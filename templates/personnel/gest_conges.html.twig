@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Congés{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('csss/bootstrap.css') }}">
+{% endblock %}
+	
+{% block body %}
+<div class="main-content-inner">
+      
+                <div class="row">
+
+
+                    
+                    <!-- data table start -->
+                    <div class="col-12 mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="header-title">Liste de demandes</h4>
+                                <div class="single-table">
+                                    <div class="table-responsive">
+                                        <table class="table text-center" id="conges">
+                                            <thead class="text-uppercase bg-secondary">
+                                                <tr class="text-white">
+                                                    <th scope="col">Demandeur</th>
+                                                    <th scope="col">Date de départ</th>
+                                                    <th scope="col">Date de retour</th>
+                                                    <th scope="col">Motif</th>
+                                                    <th scope="col">Actions</th>
+                                                </tr>
+                                            </thead>
+
+                                            
+                                            	{% for conge in conges %}	
+                                            <tbody>
+                                                <tr>
+                                                    
+                                                    <td>{{ conge.username}}</td>
+                                                    <td>{{ conge.date_depart | date("d-m-Y")}}</td>
+                                                    <td>{{ conge.date_retour | date("d/m/Y")}}</td>
+                                                    <td>{{ conge.motif }}</td>
+                                                    
+                                                    <td>
+
+                                                    <a href="javascript:void(0);" class="btn btn-info valid" data-idcon="{{ conge.id }}">Valider</a>
+
+                                                    <a href="javascript:void(0);" class="btn btn-danger delete" data-idconge="{{ conge.id }}">Refuser</a>
+                                                    
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                            </tbody>
+                                        {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- data table end -->
+
+
+
+                    <!-- Modal valider demande-->
+      
+                         <div class="modal fade" id="ValidModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                               <div class="modal-content">
+                                   <div class="modal-header">
+                                        <h5 class="modal-title" id="myModalLabel">Confirmation</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                   </div>
+                                   <div class="modal-body">
+                                        <strong>Etes-vous sûr de valider cette demande?</strong>
+                                  
+                                   </div>
+                                   <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                        <button type="submit" class="btn btn-success confirmer" data-dismiss="modal">Confirmer</button>
+                                   </div>
+                                    </div>
+                            </div>
+                         </div>
+
+                    <!-- Modal refuser demande-->
+      
+                         <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                               <div class="modal-content">
+                                   <div class="modal-header">
+                                        <h5 class="modal-title" id="myModalLabel">Confirmation</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                   </div>
+                                   <div class="modal-body">
+                                        <strong>Etes-vous sûr de refuser cette demande?</strong> 
+                                   </div>
+                                   <div class="modal-footer">
+                                        <input type="hidden"class="form-control congid" required>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                        <button type="submit" class="btn btn-danger supp">Confirmer</button>
+                                   </div>
+                                    </div>
+                            </div>
+                         </div>
+                  
+                </div>
+            </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('jss/jquery-3.4.1.js') }}"></script>
+    <script src="{{ asset('jss/bootstrap.js') }}"></script>
+	{{ parent() }}
+<script>
+    $(document).ready(function(){
+        //Premier validation du demande      
+        $('#conges').on('click','.valid',function(){
+        var con = $(this).data('idcon');
+        $('#ValidModal').modal('show');
+        $('.cg').val(con);
+
+        //fonction manova ny state an'ilay congé eto
+        $('#ValidModal').on('click', '.confirmer', function() {
+            fetch(`/gest_conges/validate/${con}`, {
+            }).then(res => window.location.reload());
+        })
+      });
+
+
+
+
+        //Refus de congé
+        $('#conges').on('click','.delete',function(){
+        var congeid = $(this).data('idconge'); // Ty ny maka an'ilay id ho supprimena
+        $('#DeleteModal').modal('show');
+        $('.congid').val(congeid);
+        
+        $('#DeleteModal').on('click','.supp', function() {
+            fetch(`/gest_conges/refuse/${congeid}`, {
+                method: 'DELETE'
+            }).then(res => window.location.reload());
+        })
+        });
+
+
+
+      });
+ 
+</script>
+{% endblock %}

@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Permissions{% endblock %}
+
+{% block body %}
+<div class="main-content-inner">
+      <div class="row">
+            <div class="col-12 mt-5">
+             <div class="card">
+                 <div class="card-body">
+                 	<div class="single-table">
+                                    <div class="table-responsive">
+                                        <table class="table text-center" id="permissions">
+                                            <thead class="text-uppercase bg-secondary">
+                                                <tr class="text-white">
+                                                    <th scope="col">Demandeur</th>
+                                                    <th scope="col">Date de permission</th>
+                                                    <th scope="col">Heure de départ</th>
+                                                    <th scope="col">Heure de retour</th>
+                                                    <th scope="col" >Motif</th>
+                                                    <th scope="col">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            {% for permissions in permis %}	
+                                            <tbody>
+                                            	
+                                                <tr>
+                                                    <td>{{ permissions.username}}</td>
+                                                    <td>{{ permissions.date_permission | date("d/m/Y") }}</td>
+                                                    <td>{{ permissions.heure_depart | date("H:m") }}</td>
+                                                    <td>{{ permissions.heure_retour | date("H:m")}}</td>
+                                                    <td>{{ permissions.sujet }}</td>
+                                                    <td>
+
+                                                    <a href="javascript:void(0);" class="btn btn-success valider" data-per="{{ permissions.id }}"><i class="ti-check"></i>Valider</a>
+
+                                                    <a href="javascript:void(0);" class="btn btn-danger refuser" data-per="{{ permissions.id }}">Refuser</a>
+                                           
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                            </tbody>
+                                        {% endfor %}
+                                        </table>
+
+                        <!-- Modal valider demande permission-->
+      
+                         <div class="modal fade" id="ValidModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                               <div class="modal-content">
+                                   <div class="modal-header">
+                                        <h5 class="modal-title" id="myModalLabel">Confirmation</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                   </div>
+                                   <div class="modal-body">
+                                        <strong>Etes-vous sûr de valider cette demande?</strong>
+                                  
+                                   </div>
+                                   <div class="modal-footer">
+                                        <input type="text"class="form-control pr" required>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                        <button type="submit" class="btn btn-success confirmer" data-dismiss="modal">Confirmer</button>
+                                   </div>
+                                  </div>
+                            </div>
+                         </div>
+
+                         <!-- Modal refuser demande-->
+      
+                         <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                               <div class="modal-content">
+                                   <div class="modal-header">
+                                        <h5 class="modal-title" id="myModalLabel">Confirmation</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                   </div>
+                                   <div class="modal-body">
+                                        <strong>Etes-vous sûr de refuser cette demande?</strong> 
+                                   </div>
+                                   <div class="modal-footer">
+                                        <input type="hidden"class="form-control congid" required>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                        <button type="submit" class="btn btn-danger ref" data-dismiss="modal">Confirmer</button>
+                                   </div>
+                                    </div>
+                            </div>
+                         </div>
+
+
+                                </div>
+                         </div>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+ {% block javascripts %}
+  <script src="{{ asset('jss/jquery-3.4.1.js') }}"></script>
+  <script src="{{ asset('jss/bootstrap.js') }}"></script>
+  
+  {{ parent() }}
+  <script>
+  $(document).ready(function(){
+    //Validation du permission via modal
+    $('#permissions').on('click', '.valider',function(){
+      const per = $(this).data('per');
+      $('#ValidModal').modal('show');
+      $('.pr').val(per);
+
+      $('#ValidModal').on('click', '.confirmer', function() {
+        fetch(`/gest_permission/valider/${per}`, {
+        }).then(res => window.location.reload());
+      })
+
+    });
+
+
+    //Refuser du permission via modal
+    $('#permissions').on('click', '.refuser',function(){
+      const permi = $(this).data('per');
+      $('#DeleteModal').modal('show');
+
+      $('#DeleteModal').on('click', '.ref', function() {
+        fetch(`/gest_permission/refuser/${permi}`, {
+        }).then(res => window.location.reload());
+      })
+    })
+
+  });
+  </script>
+ {% endblock %}
+
+{% endblock %}

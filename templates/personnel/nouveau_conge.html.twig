@@ -1,0 +1,46 @@
+{% extends 'base_user.html.twig' %}
+{% form_theme formConge 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Nouveau congé{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/datepicker.css') }}">
+{% endblock %}
+{% block body %}
+        
+	<div class="main-content-inner">
+                <div class="row">
+                    <!-- data table start -->
+                    <div class="col-10 mt-5">
+
+
+                        <div class="card">
+                        
+                            <div class="card-body">
+
+                                <h2>Veuillez remplir les informations ci-dessous:</h2>
+                                <br>
+                                <br>
+                            	{{ form_start(formConge) }}
+                            	{{ form_widget(formConge) }}
+                            	{{ form_end(formConge) }}
+                            	
+                            	
+                            </div>
+                            	
+                        </div>
+                    </div>
+                    <!-- data table end -->
+                    
+                  
+                </div>
+            </div>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('js/datepicker.js') }}"></script>
+	<script type="text/javascript">
+	jQuery(document).ready(function{
+		$('.js-datepicker').datepicker();
+	});
+	</script>
+{% endblock %}
