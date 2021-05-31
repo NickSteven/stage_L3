@@ -151,6 +151,26 @@ class CongesController extends AbstractController
         ));
     }
 
+    /**
+     * Génération d'une solde congé
+     * @Route("/gest_conges/generate/{id}", name="solde_generate")
+     */
+    public function genererSolde($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        //générer une solde pour l'user
+        $generate_query = "INSERT INTO `soldes` (`id`, `user_id`, `initial`, `consomme`, `restant`) VALUES (NULL, $id , '30', '0', '0');";
+
+        //affecter l'avoir_solde de l'user en oui
+        $affec_query = "UPDATE `user` SET `avoir_solde` = 1 WHERE `user`.`id` = $id;";
+        $statement = $em->getConnection()->prepare($generate_query);
+        $stmt = $em->getConnection()->prepare($affec_query);
+        $statement->execute();
+        $stmt->execute();
+
+        return $this->redirectToRoute('personnel_show');
+    }
+
 
     // Affichange conge à valider
     /**

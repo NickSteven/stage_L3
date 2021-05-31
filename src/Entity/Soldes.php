@@ -33,7 +33,8 @@ class Soldes
     private $restant;
 
     /**
-     * @ORM\OneToOne(targetEntity=user::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=user::class, inversedBy="soldes")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 

@@ -73,10 +73,21 @@ class User implements UserInterface
      */
     private $adresse;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Soldes::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $soldes;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $avoir_solde;
+
     public function __construct()
     {
         $this->conges = new ArrayCollection();
         $this->permissions = new ArrayCollection();
+        $this->soldes = new ArrayCollection();
     }
 
     public function __toString()
@@ -235,6 +246,48 @@ class User implements UserInterface
     public function setAdresse(string $adresse): self
     {
         $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Soldes[]
+     */
+    public function getSoldes(): Collection
+    {
+        return $this->soldes;
+    }
+
+    public function addSolde(Soldes $solde): self
+    {
+        if (!$this->soldes->contains($solde)) {
+            $this->soldes[] = $solde;
+            $solde->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSolde(Soldes $solde): self
+    {
+        if ($this->soldes->removeElement($solde)) {
+            // set the owning side to null (unless already changed)
+            if ($solde->getUser() === $this) {
+                $solde->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAvoirSolde(): ?string
+    {
+        return $this->avoir_solde;
+    }
+
+    public function setAvoirSolde(string $avoir_solde): self
+    {
+        $this->avoir_solde = $avoir_solde;
 
         return $this;
     }

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210430152940 extends AbstractMigration
+final class Version20210531141757 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -20,12 +20,14 @@ final class Version20210430152940 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE permission (id INT AUTO_INCREMENT NOT NULL, date_et_heure_de_depart DATETIME NOT NULL, date_et_heure_de_retour DATETIME NOT NULL, sujet VARCHAR(255) NOT NULL, state VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE soldes DROP INDEX UNIQ_C8BEAA73A76ED395, ADD INDEX IDX_C8BEAA73A76ED395 (user_id)');
+        $this->addSql('ALTER TABLE soldes CHANGE user_id user_id INT NOT NULL');
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE permission');
+        $this->addSql('ALTER TABLE soldes DROP INDEX IDX_C8BEAA73A76ED395, ADD UNIQUE INDEX UNIQ_C8BEAA73A76ED395 (user_id)');
+        $this->addSql('ALTER TABLE soldes CHANGE user_id user_id INT DEFAULT NULL');
     }
 }
