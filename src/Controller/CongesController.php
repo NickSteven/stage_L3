@@ -94,23 +94,35 @@ class CongesController extends AbstractController
         $toValid_query = "UPDATE `conges` SET `etat` = 'A valider' WHERE `conges`.`id` = $id ;";
         $statement = $em->getConnection()->prepare($toValid_query);
 
-        //Soustration du solde initial par celle de demandé
-        //$toSoustract_query = "update soldes set initial = initial - 3 where user_id = 5;"
         $statement->execute();
 
         return true;
     }
+    
+    /**
+     * Mise à jour du solde (consomme)
+     * @Route("/gest_conges/addconsom/{nb}/{id}", name="cumul_consomme")
+     * @Method({"POST0"})
+     */
+    public function cumulConsomme($nb, $id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $cumul_query = "UPDATE `soldes` SET `consomme` = `consomme` + $nb WHERE `soldes`.`user_id` = $id;";
+        $statement = $em->getConnection()->prepare($cumul_query);
+        $statement->execute();
+        return $this->redirectToRoute('conges_show');
+    }
 
 
     /**
-     * Mise à jour du solde
+     * Mise à jour du solde (colonne restant)
      * @Route("/gest_conges/soustract/{nb}/{id}", name="soldes_soustract")
      * @Method({"POST"})
      */
     public function soustractSolde($nb, $id) {
         $em = $this->getDoctrine()->getManager();
 
-        $toSoustract_query = "UPDATE `soldes` SET `initial` = `initial` - $nb WHERE `soldes`.`user_id` = $id;";
+        $toSoustract_query = "UPDATE `soldes` SET `restant` = `restant` - $nb WHERE `soldes`.`user_id` = $id;";
         $statement = $em->getConnection()->prepare($toSoustract_query);
         $statement->execute();
         return $this->redirectToRoute('conges_show');
@@ -177,7 +189,7 @@ class CongesController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         //générer une solde pour l'user
-        $generate_query = "INSERT INTO `soldes` (`id`, `user_id`, `initial`, `consomme`, `restant`) VALUES (NULL, $id , '30', '0', '0');";
+        $generate_query = "INSERT INTO `soldes` (`id`, `user_id`, `initial`, `consomme`, `restant`) VALUES (NULL, $id , '30', '0', '30');";
 
         //affecter l'avoir_solde de l'user en oui
         $affec_query = "UPDATE `user` SET `avoir_solde` = 1 WHERE `user`.`id` = $id;";
