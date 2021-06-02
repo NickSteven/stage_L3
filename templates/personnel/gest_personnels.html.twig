@@ -45,7 +45,9 @@
                                                         <a href="{{ path('edit_employe', {id: employe.id} )}}" class="btn btn-success"><i class="ti-pencil-alt"></i></a>
 
                                                         <a href="javascript:void(0);" class="btn btn-danger supp" data-userid="{{ employe.id }}"><i class="ti-trash" style="color:white"></i></a>
+                                                        {% if employe.avoir_solde == 0 %}
                                                         <a href="javascript:void(0);" class="btn btn-dark gen" data-usrid="{{ employe.id }}"><i class="ti-plus"></i></a>
+                                                        {% endif %}
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -95,7 +97,7 @@
                                    <div class="modal-footer">
                                         <input type="hidden"class="form-control congid" required>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                        <button type="submit" class="btn btn-dark gener" data-dismiss="modal">Supprimer</button>
+                                        <button type="submit" class="btn btn-dark gener" data-dismiss="modal">Affecter</button>
                                    </div>
                                     </div>
                             </div>
@@ -121,7 +123,7 @@ $(document).ready(function(){
         const user = $(this).data('userid'); // Ty ny maka an'ilay id ho supprimena
         $('#DeleteModal').modal('show');
         
-        $('#DeleteModal').on('click','.gener', function() {
+        $('#DeleteModal').on('click','.del', function() {
             fetch(`/gest_personnel/delete/${user}`, {
                 method: 'DELETE'
             }).then(res => window.location.reload());
@@ -133,9 +135,9 @@ $(document).ready(function(){
         const usr = $(this).data('usrid'); // Ty ny maka an'ilay id ho supprimena
         $('#GenerateModal').modal('show');
         
-        $('#DeleteModal').on('click','.gener', function() {
-            fetch(`/gest_conges/generate/${user}`, {
-                method: 'POST'
+        $('#GenerateModal').on('click','.gener', function() {
+            console.log('hey');
+            fetch(`/gest_conges/generate/${usr}`, {
             }).then(res => window.location.reload());
         })
         });

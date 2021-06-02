@@ -81,7 +81,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $avoir_solde;
+    public $avoir_solde;
 
     public function __construct()
     {

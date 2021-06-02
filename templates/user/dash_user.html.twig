@@ -9,27 +9,28 @@
         <div class="col-lg-5 mt-5">
                         <div class="card">
                             <div class="card-body">
+                            {% for soldes in solde %}
                                 <h4 class="header-title">Solde congés</h4>
                                 
                                 <button type="button" class="btn btn-success btn-lg btn-block">
                                     Votre solde :
                                     
-                                    <span class="badge badge-light"></span>
+                                    <span class="badge badge-light">{{ soldes.initial }}</span>
                                     
                                 </button>
                                 <button type="button" class="btn btn-primary btn-lg btn-block">
                                     Consommés :
                                     
-                                    <span class="badge badge-light"></span>
+                                    <span class="badge badge-light">{{ soldes.consomme }}</span>
                                     
                                 </button>
                                 <button type="button" class="btn btn-danger btn-lg btn-block">
                                     Restants :
                                     
-                                    <span class="badge badge-light"></span>
+                                    <span class="badge badge-light">{{ soldes.restant }}</span>
                                     
                                 </button>
-                                <span class=""></span>
+                                {% endfor %}
                                 
                             </div>
                         </div>
@@ -57,6 +58,7 @@
                                             <thead class="text-uppercase bg-secondary">
                                                 <tr class="text-white">
                                                     <th scope="col">Date demande</th>
+                                                    <th scope="col">Date demande</th>
                                                     <th scope="col">Motif</th>
                                                     <th scope="col">Etat</th>
                                                     <th scope="col">Actions</th>
@@ -66,6 +68,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td>{{ conges.date_demande | date("d/m/Y") }}</td>
+                                                    <td>{{ conges.nb_jours}}</td>
                                                     <td>{{ conges.motif}}</td>
                                                     <td>{{ conges.etat }}</td>
                                                     <td>

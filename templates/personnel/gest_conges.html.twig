@@ -25,7 +25,9 @@
                                                     <th scope="col">Demandeur</th>
                                                     <th scope="col">Date de départ</th>
                                                     <th scope="col">Date de retour</th>
+                                                    <th scope="col">Nombre de jours demandés</th>
                                                     <th scope="col">Motif</th>
+                                                    <th scope="col">User_id</th>
                                                     <th scope="col">Actions</th>
                                                 </tr>
                                             </thead>
@@ -38,11 +40,13 @@
                                                     <td>{{ conge.username}}</td>
                                                     <td>{{ conge.date_depart | date("d-m-Y")}}</td>
                                                     <td>{{ conge.date_retour | date("d/m/Y")}}</td>
+                                                    <td>{{ conge.nb_jours }}</td>
                                                     <td>{{ conge.motif }}</td>
+                                                    <td>{{ conge.users_id }}</td>
                                                     
                                                     <td>
 
-                                                    <a href="javascript:void(0);" class="btn btn-info valid" data-idcon="{{ conge.id }}">Valider</a>
+                                                    <a href="javascript:void(0);" class="btn btn-info valid" data-idcon="{{ conge.id }}" data-nb="{{ conge.nb_jours }}" data-us="{{ conge.users_id }}">Valider</a>
 
                                                     <a href="javascript:void(0);" class="btn btn-danger delete" data-idconge="{{ conge.id }}">Refuser</a>
                                                     
@@ -117,12 +121,14 @@
         //Premier validation du demande      
         $('#conges').on('click','.valid',function(){
         var con = $(this).data('idcon');
+        var nb = $(this).data('nb');
+        var usd = $(this).data('us');
         $('#ValidModal').modal('show');
         $('.cg').val(con);
 
-        //fonction manova ny state an'ilay congé eto
+        //fonction manova ny state an'ilay congé mipetraka eto
         $('#ValidModal').on('click', '.confirmer', function() {
-            fetch(`/gest_conges/validate/${con}`, {
+            fetch(`/gest_conges/validate/${con}`, `/gest_conges/soustract/${nb}/${usd}`, {
             }).then(res => window.location.reload());
         })
       });

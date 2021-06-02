@@ -71,7 +71,7 @@ class CongesController extends AbstractController
         //Affichage par requête
         $em = $this->getDoctrine()->getManager();
 
-        $requete = "SELECT conges.id, date_depart, date_retour,motif, username from conges, user where conges.users_id = user.id and etat = 'En attente';";
+        $requete = "SELECT conges.id, users_id, date_depart, date_retour,motif, username, nb_jours from conges, user where conges.users_id = user.id and etat = 'En attente';";
 
         $statement = $em->getConnection()->prepare($requete);
         $statement->execute();
@@ -91,11 +91,29 @@ class CongesController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         //mise en place du requête de validation
-        $query = "UPDATE `conges` SET `etat` = 'A valider' WHERE `conges`.`id` = $id ;";
-        $statement = $em->getConnection()->prepare($query);
+        $toValid_query = "UPDATE `conges` SET `etat` = 'A valider' WHERE `conges`.`id` = $id ;";
+        $statement = $em->getConnection()->prepare($toValid_query);
+
+        //Soustration du solde initial par celle de demandé
+        //$toSoustract_query = "update soldes set initial = initial - 3 where user_id = 5;"
         $statement->execute();
 
         return true;
+    }
+
+
+    /**
+     * Mise à jour du solde
+     * @Route("/gest_conges/soustract/{nb}/{id}", name="soldes_soustract")
+     * @Method({"POST"})
+     */
+    public function soustractSolde($nb, $id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $toSoustract_query = "UPDATE `soldes` SET `initial` = `initial` - $nb WHERE `soldes`.`user_id` = $id;";
+        $statement = $em->getConnection()->prepare($toSoustract_query);
+        $statement->execute();
+        return $this->redirectToRoute('conges_show');
     }
 
     // Annulation d'une demande de congé

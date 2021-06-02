@@ -21,13 +21,14 @@ class SecurityController extends AbstractController
     public function registration(Request $request, ManagerRegistry $manager, UserPasswordEncoderInterface $encoder)
     {
        $user = new User();
-       $soldes = new Soldes();
 
        $form = $this->createForm(RegistrationType::class, $user);
 
        $form->handleRequest($request);
 
        if($form->isSubmitted() && $form->isValid()) {
+            //Paramétrage du nouveau compte en n'ayant pas de solde
+            $user->setAvoirSolde(0);
             //Hashage du mot de passe
        		$hash = $encoder->encodePassword($user, $user->getPassword());
        		$user->setPassword($hash);

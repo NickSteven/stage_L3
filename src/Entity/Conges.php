@@ -48,6 +48,11 @@ class Conges
      */
     private $users;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    public $nb_jours;
+
 
     public function __toString()
     {
@@ -127,6 +132,18 @@ class Conges
     public function setUsers(?user $users): self
     {
         $this->users = $users;
+
+        return $this;
+    }
+
+    public function getNbJours(): ?string
+    {
+        return $this->nb_jours;
+    }
+
+    public function setNbJours(string $nb_jours): self
+    {
+        $this->nb_jours = $nb_jours;
 
         return $this;
     }

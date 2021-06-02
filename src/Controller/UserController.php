@@ -69,6 +69,7 @@ class UserController extends AbstractController
                         'required' => TRUE,
                         'widget' => 'single_text',
                      ])
+                     ->add('nb_jours')
                      ->add('motif', TextareaType::class, [
                         
                      ])
