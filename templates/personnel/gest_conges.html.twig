@@ -126,11 +126,15 @@
         $('#ValidModal').modal('show');
         $('.cg').val(con);
 
-        //fonction manova ny state an'ilay congé mipetraka eto
+        //fonction manova ny state an'ilay congé eto
         $('#ValidModal').on('click', '.confirmer', function() {
-            fetch(`/gest_conges/validate/${con}`, `/gest_conges/soustract/${nb}/${usd}`, {
+            fetch(`/gest_conges/validate/${con}`,  {
+            }).then(res => window.location.reload());
+
+            fetch(`/gest_conges/soustract/${nb}/${usd}`, {
             }).then(res => window.location.reload());
         })
+            
       });
 
 
