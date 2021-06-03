@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_sup.html.twig' %}
 
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('datatables/css/bootstrap.css') }}">
@@ -120,31 +120,11 @@
         </div>
 
     </div>
-
-    {% for rol in app.user.roles %}
-                        <input type="hidden" id="role" value="{{ rol }}" disabled>
-                    {% endfor %}
     </div>
                 
     {% endblock %}
-
     {% block javascripts %}
-        {{ parent()}}
-    <script type="text/javascript">
-    $(document).ready(function() {
-        var str = $('#role').val();
-        if( str == "ROLE_MODO"){
-            window.location = "http://localhost:8000/modo/homepage";
-        } else if( str == "ROLE_USER") {
-            window.location = "http://localhost:8000/user/dashboard";
-        }
-
-
-
-    });
-
-    </script>
-    <script type="text/javascript" src="{{ asset('datatables/js/jquery-3.5.1.js') }}"></script>
+     <script type="text/javascript" src="{{ asset('datatables/js/jquery-3.5.1.js') }}"></script>
     <script type="text/javascript" src="{{ asset('datatables/js/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('datatables/js/dataTables.bootstrap4.min.js') }}"></script>
     <script type="text/javascript">

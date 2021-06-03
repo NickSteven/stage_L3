@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_sup.html.twig' %}
 
 {% block title %}Congés{% endblock %}
 {% block stylesheets %}
@@ -128,7 +128,13 @@
 
         //fonction manova ny state an'ilay congé eto
         $('#ValidModal').on('click', '.confirmer', function() {
-            fetch(`/gest_conges/validate/${con}`,  {
+            fetch(`/sup_admin/valider/${con}`,  {
+            }).then(res => window.location.reload());
+
+            fetch(`/sup_admin/soustract/${nb}/${usd}`, {
+            }).then(res => window.location.reload());
+
+            fetch(`/sup_admin/addconsom/${nb}/${usd}`, {
             }).then(res => window.location.reload());
         })
             

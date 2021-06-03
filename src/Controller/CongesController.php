@@ -34,7 +34,6 @@ class CongesController extends AbstractController
      * @Route("/" , name="accueil_show")
      */
     public function dashboard(Request $request): Response {
-        // Accès seulement pour l'administrateur
 
         //Requête d'affichage de tous les conges
         $conges = $this->repository->findAll();
@@ -87,7 +86,7 @@ class CongesController extends AbstractController
      * @Route("/gest_conges/validate/{id}", name="conges_validate")
      * @Method({"POST"})
      */
-    public function validerConge(Request $request, $id) {
+    public function AvaliderConge(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         //mise en place du requête de validation
@@ -99,34 +98,7 @@ class CongesController extends AbstractController
         return true;
     }
     
-    /**
-     * Mise à jour du solde (consomme)
-     * @Route("/gest_conges/addconsom/{nb}/{id}", name="cumul_consomme")
-     * @Method({"POST0"})
-     */
-    public function cumulConsomme($nb, $id) {
-        $em = $this->getDoctrine()->getManager();
 
-        $cumul_query = "UPDATE `soldes` SET `consomme` = `consomme` + $nb WHERE `soldes`.`user_id` = $id;";
-        $statement = $em->getConnection()->prepare($cumul_query);
-        $statement->execute();
-        return $this->redirectToRoute('conges_show');
-    }
-
-
-    /**
-     * Mise à jour du solde (colonne restant)
-     * @Route("/gest_conges/soustract/{nb}/{id}", name="soldes_soustract")
-     * @Method({"POST"})
-     */
-    public function soustractSolde($nb, $id) {
-        $em = $this->getDoctrine()->getManager();
-
-        $toSoustract_query = "UPDATE `soldes` SET `restant` = `restant` - $nb WHERE `soldes`.`user_id` = $id;";
-        $statement = $em->getConnection()->prepare($toSoustract_query);
-        $statement->execute();
-        return $this->redirectToRoute('conges_show');
-    }
 
     // Annulation d'une demande de congé
     /**
@@ -215,6 +187,93 @@ class CongesController extends AbstractController
         ]);
     }
 
+    /**
+     * Dashboard pour admin
+     * @Route("/sup_admin/homepage", name="admin_dash")
+     */
+    public function showAccueil() {
+
+        $conges = $this->repository->findAll();
+
+        //Requête d'affichage de tous les permissions
+        $em = $this->getDoctrine()->getManager();
+
+        $req = "SELECT date_demande, state, username from permission, user where user.id = permission.users_id;";
+
+        $statement = $em->getConnection()->prepare($req);
+        $statement->execute();
+
+        $permissions = $statement->fetchAll();
+
+        return $this->render('sup_admin/dashboard.html.twig', [
+            'tab' => 'bord',
+            'conges' => $conges,
+            'permissions' => $permissions
+        ]);
+    }
+
+    /**
+     * Gestion congés pour super admin
+     * @Route("/sup_admin/conges", name="sup_conges")
+     */
+    public function superCongeAvalider() {
+        $em = $this->getDoctrine()->getManager();
+        $req = "SELECT conges.id, users_id, date_depart, date_retour,motif, username, nb_jours from conges, user where conges.users_id = user.id and etat = 'A valider';";
+        $statement = $em->getConnection()->prepare($req);
+        $statement->execute();
+        $conges = $statement->fetchAll();
+        return $this->render('/sup_admin/conges.html.twig', [
+            'conges' => $conges
+        ]);
+    }
+
+    /**
+     * Changement d'etat du congé en Validé
+     * @Route("/sup_admin/valider/{id}")
+     */
+    public function validerConge($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        //mise en place du requête de validation
+        $toValid_query = "UPDATE `conges` SET `etat` = 'Validé' WHERE `conges`.`id` = $id ;";
+        $statement = $em->getConnection()->prepare($toValid_query);
+
+        $statement->execute();
+
+        return $this->redirectToRoute('sup_conges');
+    }
+
+
+
+    /**
+     * Mise à jour du solde (consomme)
+     * @Route("/sup_admin/addconsom/{nb}/{id}", name="cumul_consomme")
+     * @Method({"POST0"})
+     */
+    public function cumulConsomme($nb, $id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $cumul_query = "UPDATE `soldes` SET `consomme` = `consomme` + $nb WHERE `soldes`.`user_id` = $id;";
+        $statement = $em->getConnection()->prepare($cumul_query);
+        $statement->execute();
+        return $this->redirectToRoute('supp_conges');
+    }
+
+    /**
+     * Mise à jour du solde (colonne restant)
+     * @Route("/sup_admin/soustract/{nb}/{id}", name="soldes_soustract")
+     * @Method({"POST"})
+     */
+    public function soustractSolde($nb, $id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $toSoustract_query = "UPDATE `soldes` SET `restant` = `restant` - $nb WHERE `soldes`.`user_id` = $id;";
+        $statement = $em->getConnection()->prepare($toSoustract_query);
+        $statement->execute();
+        return $this->redirectToRoute('sup_conges');
+    }
+
+    
     
 
 }
