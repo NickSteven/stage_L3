@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Conges;
+use App\Entity\User;
 use App\Repository\CongesRepository;
 use App\Entity\Permission;
 use Doctrine\Persistence\ManagerRegistry;
@@ -187,6 +188,8 @@ class CongesController extends AbstractController
         ]);
     }
 
+    //********************** BACK END SUPER ADMIN* **********************/
+
     /**
      * Dashboard pour admin
      * @Route("/sup_admin/homepage", name="admin_dash")
@@ -244,7 +247,6 @@ class CongesController extends AbstractController
     }
 
 
-
     /**
      * Mise à jour du solde (consomme)
      * @Route("/sup_admin/addconsom/{nb}/{id}", name="cumul_consomme")
@@ -273,7 +275,57 @@ class CongesController extends AbstractController
         return $this->redirectToRoute('sup_conges');
     }
 
+    /**
+     * Vers page permission
+     * @Route("/sup_admin/permission", name="sup_permissions")
+     */
+    public function supPermission() {
+        $em = $this->getDoctrine()->getManager();
+        $req = "SELECT permission.id, username, date_permission, heure_depart, heure_retour, sujet FROM permission, user WHERE user.id = permission.users_id AND `state` = 'A valider';";
+        $statement = $em->getConnection()->prepare($req);
+        $statement->execute();
+        $permissions = $statement->fetchAll();
+        return $this->render('sup_admin/permission.html.twig', [
+            'permis' => $permissions
+        ]);
+    }
+
+    /**
+     * Valider une permission
+     * @Route("/sup_admin/permisValider/{id}")
+     */
+    public function validerPermission($id) {
+        $em = $this->getDoctrine()->getManager();
+        $req = "UPDATE `permission` set `state` = 'Validé' WHERE `permission`.`id` = $id;";
+        $statement = $em->getConnection()->prepare($req);
+        $statement->execute();
+        return $this->redirectToRoute('sup_permissions');
+    }
+
+    /**
+     * Refuser une permission
+     * @Route("/sup_admin/permisRefuser/{id}")
+     */
+    public function validPermission($id) {
+        $em = $this->getDoctrine()->getManager();
+        $req = "UPDATE `permission` set `state` = 'Refusé' WHERE `permission`.`id` = $id;";
+        $statement = $em->getConnection()->prepare($req);
+        $statement->execute();
+        return $this->redirectToRoute('sup_permissions');
+    }
     
     
+    /**
+     * Vers page personnel
+     * @Route("/sup_admin/personnel", name="sup_personnel")
+     */
+    public function supPersonnel() {
+        $employes = $this->getDoctrine()->getRepository(User::class)->findAll();
+
+        return $this->render('sup_admin/personnel.html.twig', [
+            'personnel' => 'personnels',
+            'employes' => $employes
+        ]);
+    }
 
 }
