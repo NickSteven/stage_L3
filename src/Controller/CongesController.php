@@ -8,6 +8,7 @@ use App\Repository\CongesRepository;
 use App\Entity\Permission;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
+use App\Form\EditUserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -325,6 +326,27 @@ class CongesController extends AbstractController
         return $this->render('sup_admin/personnel.html.twig', [
             'personnel' => 'personnels',
             'employes' => $employes
+        ]);
+    }
+
+    /**
+     * Editer un personnel
+     * @Route("/sup_admin/editer/{id}", name="user_edit")
+     */
+    public function editPerso(User $user, Request $request) {
+        $formUser = $this->createForm(EditUserType::class, $user);
+        $formUser->handleRequest($request);
+
+        if($formUser->isSubmitted() && $formUser->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('message', 'Utilisateur modifié avec succès');
+            return $this->redirectToRoute('sup_personnel');
+        }
+        return $this->render('sup_admin/edit_user.html.twig', [
+            'userForm' => $formUser->createView()
         ]);
     }
 

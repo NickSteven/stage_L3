@@ -57,8 +57,8 @@
                                         <table class="table text-center" id="con">
                                             <thead class="text-uppercase bg-secondary">
                                                 <tr class="text-white">
-                                                    <th scope="col">Date demande</th>
-                                                    <th scope="col">Date demande</th>
+                                                    <th scope="col">Date de départ</th>
+                                                    <th scope="col">Date de retour</th>
                                                     <th scope="col">Motif</th>
                                                     <th scope="col">Etat</th>
                                                     <th scope="col">Actions</th>
@@ -67,8 +67,8 @@
                                             {% for conges in conges %}
                                             <tbody>
                                                 <tr>
-                                                    <td>{{ conges.date_demande | date("d/m/Y") }}</td>
-                                                    <td>{{ conges.nb_jours}}</td>
+                                                    <td>{{ conges.date_depart | date("d/m/Y") }}</td>
+                                                    <td>{{ conges.date_retour | date("d/m/y") }}</td>
                                                     <td>{{ conges.motif}}</td>
                                                     <td>{{ conges.etat }}</td>
                                                     <td>
@@ -79,6 +79,8 @@
                                                         <p>En attente d'approbation</p>
                                                         {% elseif conges.etat == "Refusé" %}
                                                         <p>Aucune action à faire</p>
+                                                        {% elseif conges.etat == "Validé" %}
+                                                        <p>Vous pouvez prendre votre congé</p>
                                                         {% endif %}
                                                     </td>
                                                 </tr>
@@ -129,8 +131,14 @@
                                                     <th>{{ permission.sujet }}</th>
                                                     <th>{{ permission.state }}</th>
                                                     <th>
+                                                        {% if permission.state == "En attente" %}
                                                         <a href="/permission/editer/{{ permission.id }}" class="btn btn-info">Modifier</a>
                                                         <a href="javascript:void(0);" class="btn btn-danger supprimer" data-idper="{{ permission.id }}">Retirer</a>
+                                                        {% elseif permission.state == "A valider" %}
+                                                        <p>Vu par l'administrateur, veuillez attendre</p>
+                                                        {% elseif permission.state == "Validé" %}
+                                                        <p>Parmission accordée</p>
+                                                        {% endif %}
                                                     </th>
                                                 </tr>
                                             </tbody>
