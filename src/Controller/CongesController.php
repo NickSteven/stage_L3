@@ -50,8 +50,18 @@ class CongesController extends AbstractController
 
         $permissions = $statement->fetchAll();
 
+        //Nombre de congés en attente
+        $nb_attente = "SELECT count(*) as nbAttente from conges where etat = 'En attente';";
+        $attente = $em->getConnection()->prepare($nb_attente);
+        $attente->execute();
+        $att = $attente->fetchAll();
+        //Nombbre de congés à valider
+        //Nombre de congés validé
+        //Nombre de congés réfusé
+
         return $this->render('personnel/accueil.html.twig', [
             'tab' => 'bord',
+            'atte' => $att,
             'conges' => $conges,
             'permissions' => $permissions
         ]);
