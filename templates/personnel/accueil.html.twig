@@ -14,15 +14,17 @@
 
     <!-- Le div pour la statistique sur le dashboard sera ici -->
     <div class="row">
+    
 
         <div class="col-md-3 mt-5">
             <div class="card">
                 <div class="seo-fact sbg1">
                     <div class="p-4 d-flex justify-content-between align-items-center"  style="background-color:#f0c63f;">
-                        <div class="seofct-icon"><i class="ti-flag"></i> En<span style="color:#f0c63f;">a</span>attente</div>
-                        {% for at in atte%}
+                        <div class="seofct-icon"><i class="ti-flag"></i>En<span style="color:#f0c63f;">_</span>attente</div>
+                        {% for at in atte %}
                         <h2>{{ at.nbAttente }}</h2>
                         {% endfor %}
+                        <span style="color: #f0c63f;">Something</span>
                     </div>
                     
                 </div>
@@ -34,7 +36,10 @@
                 <div class="seo-fact sbg1">
                     <div class="p-4 d-flex justify-content-between align-items-center">
                         <div class="seofct-icon"><i class="ti-ticket"></i>A<span style="color:#5b6bf4;">a</span>valider</div>
-                        <h2>2,315</h2>
+                        {% for aval in avali %}
+                        <h2>{{ aval.nbAvalider }}</h2>
+                        {% endfor %}
+                        <span style="color: #5b6bf4;">Something</span>
                     </div>
                 </div>
             </div>
@@ -45,7 +50,10 @@
                 <div class="seo-fact sbg2">
                     <div class="p-4 d-flex justify-content-between align-items-center">
                         <div class="seofct-icon"><i class="ti-check"></i> Validé</div>
-                        <h2>3,984</h2>
+                        {% for valid in valid %}
+                        <h2>{{ valid.nbValid}}</h2>
+                        {% endfor %}
+                        <span style="color: #1bd4a6;">Something</span>
                     </div>
                     
                 </div>
@@ -57,7 +65,10 @@
                 <div class="seo-fact sbg2">
                     <div class="p-4 d-flex justify-content-between align-items-center" style="background-color:#db5e56;">
                         <div class="seofct-icon"><i class="ti-close"></i> Refusé</div>
-                        <h2>3,984</h2>
+                        {% for refus in refus %}
+                        <h2>{{ refus.nbRefus }}</h2>
+                        {% endfor %}
+                        <span style="color: #db5e56;">Something</span>
                     </div>
                     
                 </div>
@@ -78,11 +89,9 @@
                         <table id="conges" class="table text-center table-striped table-bordered" style="width:100%">
                         <thead style="background-color:#444444">
                             <tr style="color:white">
-                                <th>Date de demande</th>
-                                <th>Date de départ</th>
-                                <th>Date de retour</th>
-                                <th>Motif</th>
-                                <th>Statut</th>
+                                <th><i class="fa fa-calendar-minus-o"></i> Date de demande</th>
+                                <th><i class="fa fa-user"></i> Demandeur</th>
+                                <th><i class="fa fa-info"></i> Etat du demande</th>
                             </tr>
                         </thead>
                         
@@ -90,9 +99,7 @@
                             {% for conge in conges %}
                             <tr>
                                 <td>{{ conge.date_demande |date("d/m/Y")}}</td>
-                                <td>{{ conge.date_depart |date("d/m/Y")}}</td>
-                                <td>{{ conge.date_retour |date("d/m/Y")}}</td>
-                                <td>{{ conge.motif }}</td>
+                                <td>{{ conge.prenom }}</td>
                                 <td>
                                     {% if conge.etat == "En attente" %}
                                         <span class="badge badge-waring" style="background-color:#ffc107">En attente</span>
@@ -122,9 +129,9 @@
                         <table id="permissions" class="table text-center table-striped table-bordered" style="width:100%">
                         <thead style="background-color:#444444">
                             <tr style="color:white">
-                                <th>Date de permission</th>
-                                <th>Demandeur</th>
-                                <th>Etat du demande</th>
+                                <th><i class="fa fa-calendar-minus-o"></i> Date de permission</th>
+                                <th><i class="fa fa-user"></i> Demandeur</th>
+                                <th><i class="fa fa-info"></i> Etat du demande</th>
                             </tr>
                         </thead>
                         

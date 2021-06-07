@@ -36,12 +36,15 @@ class CongesController extends AbstractController
      * @Route("/" , name="accueil_show")
      */
     public function dashboard(Request $request): Response {
-
+        $em = $this->getDoctrine()->getManager();
         //Requête d'affichage de tous les conges
         $conges = $this->repository->findAll();
+        $congeList = "SELECT date_demande, prenom, etat from conges, user where user.id = conges.users_id;";
+        $listConge = $em->getConnection()->prepare($congeList);
+        $listConge->execute();
+        $conges = $listConge->fetchAll();
 
         //Requête d'affichage de tous les permissions
-        $em = $this->getDoctrine()->getManager();
 
         $RAW_QUERY = "SELECT date_demande, state, username from permission, user where user.id = permission.users_id;";
 
@@ -55,13 +58,31 @@ class CongesController extends AbstractController
         $attente = $em->getConnection()->prepare($nb_attente);
         $attente->execute();
         $att = $attente->fetchAll();
+
         //Nombbre de congés à valider
+        $nb_Avalider = "SELECT count(*) as nbAvalider from conges where etat = 'A valider';";
+        $avalider = $em->getConnection()->prepare($nb_Avalider);
+        $avalider->execute();
+        $aval = $avalider->fetchAll();
+
         //Nombre de congés validé
+        $nb_valid = "SELECT count(*) as nbValid  from conges where etat = 'Validé';";
+        $valid = $em->getConnection()->prepare($nb_valid);
+        $valid->execute();
+        $val = $valid->fetchAll();
+
         //Nombre de congés réfusé
+        $nb_refus = "SELECT count(*) as nbRefus from conges where etat = 'Refusé';";
+        $refus = $em->getConnection()->prepare($nb_refus);
+        $refus->execute();
+        $ref = $refus->fetchAll();
 
         return $this->render('personnel/accueil.html.twig', [
             'tab' => 'bord',
             'atte' => $att,
+            'avali' => $aval,
+            'valid' => $val,
+            'refus' => $ref,
             'conges' => $conges,
             'permissions' => $permissions
         ]);
@@ -358,6 +379,21 @@ class CongesController extends AbstractController
         return $this->render('sup_admin/edit_user.html.twig', [
             'userForm' => $formUser->createView()
         ]);
+    }
+
+    /**
+     * Suppprimer un personnel
+     * @Route("/sup_admin/delete/{id}", name="user_delete")
+     */
+    public function supprimerPerso(Request $request, $id) {
+        $employe = $this->getDoctrine()->getRepository(User::class)->find($id);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($employe);
+        $entityManager->flush();
+
+        $response = new Response();
+        $response->send();
     }
 
 }

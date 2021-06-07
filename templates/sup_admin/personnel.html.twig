@@ -124,7 +124,7 @@ $(document).ready(function(){
         $('#DeleteModal').modal('show');
         
         $('#DeleteModal').on('click','.del', function() {
-            fetch(`/gest_personnel/delete/${user}`, {
+            fetch(`/sup_admin/delete/${user}`, {
                 method: 'DELETE'
             }).then(res => window.location.reload());
         })
