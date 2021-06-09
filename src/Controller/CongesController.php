@@ -6,6 +6,7 @@ use App\Entity\Conges;
 use App\Entity\User;
 use App\Repository\CongesRepository;
 use App\Entity\Permission;
+use App\Entity\Note;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use App\Form\EditUserType;
@@ -224,9 +225,36 @@ class CongesController extends AbstractController
      * Publication d'une note interne
      * @Route("/admin/note_interne", name="note_interne")
      */
-    public function publierNote() {
+    public function publierNote(Request $request, ObjectManager $manager) {
+        $note = new Note();
+        $formNote = $this->createFormBuilder($note)
+                    ->add('titre', TextType::class, [
+                            'label' => 'Le titre du note',
+                            'required' => true,
+                    ])
+                    ->add('message', TextareaType::class, [
+                            'label' => 'Ecrrivez votre message...',
+                            'required' => true,
+                    ])
+                    ->add('save', SubmitType::class, [
+                            'label' => 'Publier',
+                    ])
+                    ->getForm();
+        $formNote->handleRequest($request);
+        if($formNote->isSubmitted() && $formNote->isValid()) {
+            $note->setUser($this->getUser());
+            $note->setPublicationDate(new \Datetime());
+
+            $manager->persist($note);
+            $manager->flush();
+
+            return $this->redirectToRoute('note_interne');
+        }
+
+
         return $this->render('personnel/note_interne.html.twig', [
-            'note' => 'notes'
+            'note' => 'notes',
+            'formNote' => $formNote->createView()
         ]);
     }
 
