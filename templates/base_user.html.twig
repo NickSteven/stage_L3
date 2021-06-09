@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="{{ asset('css/default-css.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/toastStyle.css') }}">
     <!-- modernizr css -->
     <script src="{{ asset('js/vendor/modernizr-2.8.3.min.js') }}"></script>
 </head>
@@ -75,12 +76,18 @@
                                         <a href="{{ path('user_dashboard') }}"><i class="ti-dashboard" style="color: white"></i><span style="color: white">Mon tableau de bord</span></a>
                                         
                                     </li>
+                                    {% if app.user.avoir_solde == 1 %}
                                     <li>
                                         <a href="{{ path('conge_new') }}"><i class="ti-layout-sidebar-left" style="color: white"></i><span style="color: white">Demander un congé</span></a>
                                     </li>
                                     <li>
                                         <a href="{{ path('permission_new') }}"><i class="ti-pie-chart" style="color: white"></i><span style="color: white">Demander une permission</span style="color: white"></a>
                                     </li>
+                                    {% else %}
+                                    <li>
+                                        <span style="color: #fff;">Veulliez demander à l'administrateur pour activer les demandes</span>
+                                    </li>
+                                    {% endif %}
 
                                     
                                 </ul>
@@ -127,14 +134,30 @@
         </ul>
         <div class="offset-content tab-content">
         </div>
+        <div id="snackbar">Some text some message..</div>
     </div>
     <footer>
             <div class="footer-area">
                 <p>© Copyright 2018. All right reserved. Template by <a href="https://colorlib.com/wp/">Colorlib</a>.</p>
+                
             </div>
         </footer>
 {% endif %}
 {% block javascripts %}{% endblock %}
+    <script type="text/javascript">
+        function showToast() {
+            {
+                // Get the snackbar DIV
+                var x = document.getElementById("snackbar");
+              
+                // Add the "show" class to DIV
+                x.className = "show";
+              
+                // After 3 seconds, remove the show class from DIV
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+              }
+        }
+    </script>
     <!-- offset area end -->
     <!-- jquery latest version -->
     <script src="{{ asset('js/vendor/jquery-2.2.4.min.js') }}"></script>

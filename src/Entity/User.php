@@ -83,11 +83,17 @@ class User implements UserInterface
      */
     public $avoir_solde;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Note::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $notes;
+
     public function __construct()
     {
         $this->conges = new ArrayCollection();
         $this->permissions = new ArrayCollection();
         $this->soldes = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function __toString()
@@ -288,6 +294,36 @@ class User implements UserInterface
     public function setAvoirSolde(string $avoir_solde): self
     {
         $this->avoir_solde = $avoir_solde;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Note[]
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): self
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes[] = $note;
+            $note->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): self
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getUser() === $this) {
+                $note->setUser(null);
+            }
+        }
 
         return $this;
     }

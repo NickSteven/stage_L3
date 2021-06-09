@@ -89,6 +89,10 @@
                                 <a href="{{ path('personnel_show')}}" style="text-decoration:none" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span>Personnels
                                     </span></a>
                             </li>
+                            <li class="{% if note is defined and note == 'notes' %}active{% endif %}">
+                                <a href="{{ path('note_interne')}}" style="text-decoration:none" aria-expanded="true"><i class="ti-pencil-alt"></i><span>Note interne
+                                    </span></a>
+                            </li>
                             
                         </ul>
                     </nav>

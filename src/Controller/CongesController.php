@@ -220,6 +220,16 @@ class CongesController extends AbstractController
         ]);
     }
 
+    /**
+     * Publication d'une note interne
+     * @Route("/admin/note_interne", name="note_interne")
+     */
+    public function publierNote() {
+        return $this->render('personnel/note_interne.html.twig', [
+            'note' => 'notes'
+        ]);
+    }
+
     //********************** BACK END SUPER ADMIN* **********************/
 
     /**
