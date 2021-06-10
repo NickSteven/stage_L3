@@ -18,7 +18,7 @@
 
         <div class="col-12 mt-5">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body" id="notes">
                     <h2>Vos notes publiés</h2>
                     <br>
                     {% for notes in note %}
@@ -29,7 +29,7 @@
                     <p>Publié le {{ notes.publication_date | date("d/m/Y") }}</p>
                     <br>
                     <a href="/admin/note_interne/edit/{{ notes.id }}" style="color:white;" class="btn btn-info">Editer</a>
-                    <a class="btn btn-danger" style="color: white;">Supprimer</a>
+                    <a href="javascript:void(0);" class="btn btn-danger delete" data-noteid="{{ notes.id }}" style="color: white;">Supprimer</a>
                     <hr>
                     {% endfor %}
                     
@@ -37,5 +37,46 @@
             </div>
     </div>
     </div>
+
+    <!-- Modal pour supprimer une note -->
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+           <div class="modal-content">
+               <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Confirmation</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+               </div>
+               <div class="modal-body">
+                    <strong>Supprimer cette note?</strong> 
+               </div>
+               <div class="modal-footer">
+                    <input type="hidden"class="form-control congid" required>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-danger del" data-dismiss="modal">Supprimer</button>
+               </div>
+                </div>
+        </div>
+     </div>
+
 </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('jss/jquery-3.4.1.js') }}"></script>
+<script src="{{ asset('jss/bootstrap.js') }}"></script>
+{{ parent() }}
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#notes').on('click','.delete', function() {
+        const idnote = $(this).data('noteid');
+        $('#DeleteModal').modal('show');
+
+        $('#DeleteModal').on('click','.del', function() {
+            fetch(`/admin/note_interne/delete/${idnote}`, {
+                method: 'DELETE'
+            }).then(res => window.location.reload());
+        })
+    });
+})
+</script>
 {% endblock %}
