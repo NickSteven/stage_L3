@@ -19,7 +19,20 @@
         <div class="col-12 mt-5">
             <div class="card">
                 <div class="card-body">
-                    <h1>Ireo notes publiés eto</h1>
+                    <h2>Vos notes publiés</h2>
+                    <br>
+                    {% for notes in note %}
+                    <h2 class="header-title">{{ notes.titre }}</h2>
+                    
+                    <p><b>{{ notes.contenu }}</b></p>
+                    
+                    <p>Publié le {{ notes.publication_date | date("d/m/Y") }}</p>
+                    <br>
+                    <a href="/admin/note_interne/edit/{{ notes.id }}" style="color:white;" class="btn btn-info">Editer</a>
+                    <a class="btn btn-danger" style="color: white;">Supprimer</a>
+                    <hr>
+                    {% endfor %}
+                    
                 </div>
             </div>
     </div>

@@ -7,9 +7,11 @@ use App\Entity\User;
 use App\Repository\CongesRepository;
 use App\Entity\Permission;
 use App\Entity\Note;
+use App\Repository\NoteRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use App\Form\EditUserType;
+use App\Form\EditNoteType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -222,7 +224,7 @@ class CongesController extends AbstractController
     }
 
     /**
-     * Publication d'une note interne
+     * Publication d'une note interne et affichage
      * @Route("/admin/note_interne", name="note_interne")
      */
     public function publierNote(Request $request, ObjectManager $manager) {
@@ -232,7 +234,7 @@ class CongesController extends AbstractController
                             'label' => 'Le titre du note',
                             'required' => true,
                     ])
-                    ->add('message', TextareaType::class, [
+                    ->add('contenu', TextareaType::class, [
                             'label' => 'Ecrrivez votre message...',
                             'required' => true,
                     ])
@@ -251,11 +253,54 @@ class CongesController extends AbstractController
             return $this->redirectToRoute('note_interne');
         }
 
+        $user = $this->getUser();
+        $notes = $this->getDoctrine()->getRepository(Note::class)->findByUser($user);
+
 
         return $this->render('personnel/note_interne.html.twig', [
             'note' => 'notes',
-            'formNote' => $formNote->createView()
+            'formNote' => $formNote->createView(),
+            'note' => $notes,
         ]);
+    }
+
+    /**
+     * Editer une note
+     * @Route("/admin/note_interne/edit/{id}")
+     */
+    public function editNote(Note $note, Request $request) {
+        $formNote = $this->createForm(EditNoteType::class, $note);
+        $formNote->handleRequest($request);
+
+        if($formNote->isSubmitted() && $formNote->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($note);
+            $em->flush();
+
+            //$this->addFlash('message', 'Utilisateur modifié avec succès');
+            return $this->redirectToRoute('note_interne');
+        }
+        return $this->render('personnel/editer_note.html.twig', [
+            'noteForm' => $formNote->createView()
+        ]);
+    }
+
+
+    /**
+     * Suppression d'une note interne
+     * @Route("/admin/note_interne/delete/{id}")
+     * @Method({"DELETE"})
+     */
+    public function removeNote(Request $request, $id) {
+        $note = $this->getDoctrine()->getRepository(Note::class)->find($id);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($note);
+        $entityManager->flush();
+
+        $response = new Response();
+        $response->send();
+        return $this->redirectToRoute('note_interne');
     }
 
     //********************** BACK END SUPER ADMIN* **********************/

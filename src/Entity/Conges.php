@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CongesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CongesRepository::class)
@@ -24,11 +25,13 @@ class Conges
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\GreaterThanOrEqual(value = "today", message = "Veuillez ne pas insérer une date inférieure à aujourd'hui!")
      */
     public $date_depart;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\GreaterThanOrEqual(value = "today", message = "La date de retour doit être supérieur au date de départ!")
      */
     public $date_retour;
 

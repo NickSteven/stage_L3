@@ -40,11 +40,19 @@ class UserController extends AbstractController
         $conges = $this->getDoctrine()->getRepository(Conges::class)->findByUsers($user);
         $soldes = $this->getDoctrine()->getRepository(Soldes::class)->findByUser($user);
 
+        // Affichage des notes internes
+        $em = $this->getDoctrine()->getManager();
+        $note_query = "SELECT titre, contenu, publication_date, prenom FROM note, user WHERE user.id = note.user_id;";
+        $note_interne = $em->getConnection()->prepare($note_query);
+        $note_interne->execute();
+        $note = $note_interne->fetchAll();
+
         return $this->render('user/dash_user.html.twig', [
             'controller_name' => 'UserController',
             'permission' => $permission,
             'conges' => $conges,
-            'solde' => $soldes
+            'solde' => $soldes,
+            'notes' => $note
         ]);
     }
 

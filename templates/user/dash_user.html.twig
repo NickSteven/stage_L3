@@ -44,34 +44,16 @@
                 <div class="card-body bg1">
                     <h4 class="header-title text-white">Notes internes</h4>
                     <div class="testimonial-carousel owl-carousel">
+                        {% for note in notes %}
                         <div class="tst-item">
                             
                             <div class="tstu-content">
-                                <h4 class="tstu-name">Abel Franecki</h4>
-                                <span class="profsn">Designer</span>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae laborum ut nihil numquam a aliquam alias necessitatibus ipsa soluta quam!</p>
+                                <h4 class="tstu-name">{{ note.titre }}</h4>
+                                <span class="profsn">{{ note.prenom }}</span>
+                                <p>{{ note.contenu }}</p>
                             </div>
                         </div>
-                        <div class="tst-item">
-                            <div class="tstu-img">
-                                <img src="assets/images/team/team-author2.jpg" alt="author image">
-                            </div>
-                            <div class="tstu-content">
-                                <h4 class="tstu-name">Abel Franecki</h4>
-                                <span class="profsn">Designer</span>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae laborum ut nihil numquam a aliquam alias necessitatibus ipsa soluta quam!</p>
-                            </div>
-                        </div>
-                        <div class="tst-item">
-                            <div class="tstu-img">
-                                <img src="assets/images/team/team-author3.jpg" alt="author image">
-                            </div>
-                            <div class="tstu-content">
-                                <h4 class="tstu-name">Abel Franecki</h4>
-                                <span class="profsn">Designer</span>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae laborum ut nihil numquam a aliquam alias necessitatibus ipsa soluta quam!</p>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

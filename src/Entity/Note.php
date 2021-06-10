@@ -25,18 +25,18 @@ class Note
     /**
      * @ORM\Column(type="datetime")
      */
-    private $publication_date;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $message;
+    public $publication_date;
 
     /**
      * @ORM\ManyToOne(targetEntity=user::class, inversedBy="notes")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $contenu;
 
     public function getId(): ?int
     {
@@ -67,18 +67,6 @@ class Note
         return $this;
     }
 
-    public function getMessage(): ?string
-    {
-        return $this->message;
-    }
-
-    public function setMessage(string $message): self
-    {
-        $this->message = $message;
-
-        return $this;
-    }
-
     public function getUser(): ?user
     {
         return $this->user;
@@ -87,6 +75,18 @@ class Note
     public function setUser(?user $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getContenu(): ?string
+    {
+        return $this->contenu;
+    }
+
+    public function setContenu(string $contenu): self
+    {
+        $this->contenu = $contenu;
 
         return $this;
     }
