@@ -45,11 +45,46 @@ class SecurityController extends AbstractController
        ]);
     }
 
+    /**
+     * Inscription
+     * @Route("/registration", name="security_inscription")
+     */
+    public function inscription(Request $request, ManagerRegistry $manager, UserPasswordEncoderInterface $encoder)
+    {
+       $user = new User();
+
+       $form = $this->createForm(RegistrationType::class, $user);
+
+       $form->handleRequest($request);
+
+       if($form->isSubmitted() && $form->isValid()) {
+            //Paramétrage du nouveau compte en n'ayant pas de solde
+            $user->setAvoirSolde(0);
+            //Hashage du mot de passe
+       		$hash = $encoder->encodePassword($user, $user->getPassword());
+       		$user->setPassword($hash);
+            $manager = $this->getDoctrine()->getManager();
+       		$manager->persist($user);
+            $manager->flush();
+
+       		return $this->redirectToRoute('security_login');
+
+       }
+
+       return $this->render('security/inscription.html.twig', [
+       		'form' => $form->createView()
+       ]);
+    }
+
+
+
+
+
+
     // Login
     /**
      * @Route("/connexion", name="security_login")
      */
-
     public function login(){
     	return $this->render('security/login.html.twig');
       
