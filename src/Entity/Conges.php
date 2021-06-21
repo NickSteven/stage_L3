@@ -31,7 +31,7 @@ class Conges
 
     /**
      * @ORM\Column(type="date")
-     * @Assert\GreaterThanOrEqual(value = "today", message = "La date de retour doit être supérieur au date de départ!")
+     * @Assert\GreaterThanOrEqual(propertyPath = "date_depart", message = "La date de retour doit être supérieur au date de départ!")
      */
     public $date_retour;
 
