@@ -25,13 +25,13 @@ class Conges
 
     /**
      * @ORM\Column(type="date")
-     * @Assert\GreaterThanOrEqual(value = "today", message = "Veuillez ne pas insérer une date inférieure à aujourd'hui!")
+     * @Assert\GreaterThanOrEqual(value = "today", message = "Veuillez ne pas insérer une date avant aujourd'hui!")
      */
     public $date_depart;
 
     /**
      * @ORM\Column(type="date")
-     * @Assert\GreaterThanOrEqual(propertyPath = "date_depart", message = "La date de retour doit être supérieur au date de départ!")
+     * @Assert\GreaterThanOrEqual(propertyPath = "date_depart", message = "La date de retour doit être ultérieur au date de départ!")
      */
     public $date_retour;
 
