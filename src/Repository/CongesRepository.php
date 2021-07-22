@@ -67,4 +67,13 @@ class CongesRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
+    public function countByEtat(){
+        $query = $this->createQueryBuilder('a')
+            ->select('a.etat as etat, COUNT(a) as nombres')
+            ->groupBy('etat');
+            ;
+        return $query->getQuery()->getResult();
+    }
+
 }

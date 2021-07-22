@@ -3,6 +3,7 @@
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('datatables/css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('datatables/css/dataTables.bootstrap4.min.css') }}">
+    <script type="text/javascript" src="{{ asset('js/chart.min.js') }}"></script>
 
 
 {% endblock %}
@@ -28,7 +29,7 @@
             <div class="card">
                 <div class="card-body">
                     <!-- id contenant le donut chart-->
-                    <div id="donutchart" style="width: 450px; height: 400px;"></div>
+                    <canvas id="myChart"></canvas>
                   </div>  
             
         </div>
@@ -139,30 +140,31 @@
         } );
     </script>
     <script type="text/javascript" src="{{ asset('js/loader.js') }}"></script>
-    <script type="text/javascript">
-        google.charts.load("current", {packages:["corechart"]});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['', ''],
+    
+        <script>     
+            var ctx = document.getElementById('myChart');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ etat|raw }},
+                    datasets: [{
+                        label: 'Statistiques de demande',
+                        data: {{ nombres|raw }},
+                        backgroundColor: ['#007bff', '#ffc107', '#dc3545', '#28a745'],
+                        borderColor: ['#007bff', '#ffc107', '#dc3545', '#28a745'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
 
-          //Eto ny boucle no mipetraka
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
-        ]);
-
-        var options = {
-          pieHole: 0.5,
-          chartArea:{left:60,top:0,width:'100%',height:'100%'}
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-        chart.draw(data, options);
-      }
-    </script>
+        </script>
     
 
     {% endblock %}        

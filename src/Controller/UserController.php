@@ -77,7 +77,7 @@ class UserController extends AbstractController
                         'required' => TRUE,
                         'widget' => 'single_text',
                      ])
-                     ->add('nb_jours')
+                     //->add('nb_jours')
                      ->add('motif', TextareaType::class, [
                         
                      ])
@@ -92,6 +92,24 @@ class UserController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $conge->setUsers($this->getUser());
             $conge->setDateDemande(new \DateTime());
+
+            // on prend les dates du formulaire
+            $dFin = $form["date_retour"]->getData();
+            $dDebut = $form["date_depart"]->getData();
+            
+            $diff = '%a';
+
+            // on calcule la différence de jours entre les deux dates
+            $interval = date_diff($dDebut, $dFin)->format($diff);
+            
+            // on envoie le resultat du calcul dans la base de donnée
+            $conge->setNbJours($interval);
+
+
+
+
+
+
             $conge->setEtat('En attente');
 
 
@@ -121,6 +139,17 @@ class UserController extends AbstractController
         $formConge->handleRequest($request);
 
         if($formConge->isSubmitted() && $formConge->isValid()) {
+            
+            // on prend les dates du formulaire
+            $dFin = $formConge["date_retour"]->getData();
+            $dDebut = $formConge["date_depart"]->getData();
+            
+            $diff = '%a';
+
+            // on calcule la différence de jours entre les deux dates
+            $interval = date_diff($dDebut, $dFin)->format($diff);
+            
+            $conges->setNbJours($interval);
             $em = $this->getDoctrine()->getManager();
             $em->persist($conges);
             $em->flush();

@@ -309,9 +309,20 @@ class CongesController extends AbstractController
      * Dashboard pour admin
      * @Route("/sup_admin/homepage", name="admin_dash")
      */
-    public function showAccueil() {
+    public function showAccueil(CongesRepository $congesrepo) {
+        
 
         $conges = $this->repository->findAll();
+        
+        //Regrouper les etats par leur valeur et ensuite les compter
+        $conn = $congesrepo->countByEtat();
+        $etat=[];
+        $nombres=[];
+
+        foreach($conn as $con){
+            $etat[] = $con['etat'];
+            $nombres[] = $con['nombres']; //'etat' et 'nombre' se trouvent dans dans countByEtat dans CongesRepository
+        }
 
         //Requête d'affichage de tous les permissions
         $em = $this->getDoctrine()->getManager();
@@ -326,7 +337,9 @@ class CongesController extends AbstractController
         return $this->render('sup_admin/dashboard.html.twig', [
             'tab' => 'bord',
             'conges' => $conges,
-            'permissions' => $permissions
+            'permissions' => $permissions,
+            'etat' => json_encode($etat),
+            'nombres' => json_encode($nombres)
         ]);
     }
 

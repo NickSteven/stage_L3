@@ -3,12 +3,10 @@
 namespace App\Controller;
 
 
-use App\Entity\Employe;
 use App\Entity\Conges;
 use App\Entity\User;
 use App\Entity\Permission;
 use App\Entity\UserRepository;
-use App\Repository\EmployeRepository;
 use App\Repository\PermissionRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
@@ -26,15 +24,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 class PersonnelController extends AbstractController
 {	
 
-
-	/**
-	 * @var EmployeRepository
-	 */
-	private $repository;
-
-	public function __construct(EmployeRepository $repository) {
-		$this->repository = $repository;
-	}
 
     // Route vers gestion personnel
     /**
