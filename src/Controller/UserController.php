@@ -219,6 +219,7 @@ class UserController extends AbstractController
     		$permission->setUsers($this->getUser());
     		$permission->setDateDemande(new \Datetime());
     		$permission->setState('En attente');
+            $permission->setStateBadge('#ffc107');
 
     		$manager->persist($permission);
     		$manager->flush();

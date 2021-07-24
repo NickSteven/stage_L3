@@ -146,7 +146,7 @@ class CongesController extends AbstractController
     	$em = $this->getDoctrine()->getManager();
 
         //mise en place du requête d'annulation
-        $query = "UPDATE `conges` SET `etat` = 'Refusé' WHERE `conges`.`id` = $id ;";
+        $query = "UPDATE `conges` SET `etat` = 'Refusé', `etat_badge` = '#dc3545' WHERE `conges`.`id` = $id ;";
     	$statement = $em->getConnection()->prepare($query);
         $statement->execute();
 
@@ -386,7 +386,7 @@ class CongesController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         //mise en place du requête de validation
-        $toValid_query = "UPDATE `conges` SET `etat` = 'Validé' WHERE `conges`.`id` = $id ;";
+        $toValid_query = "UPDATE `conges` SET `etat` = 'Validé', `etat_badge` = '#28a745' WHERE `conges`.`id` = $id ;";
         $statement = $em->getConnection()->prepare($toValid_query);
 
         $statement->execute();
@@ -444,7 +444,7 @@ class CongesController extends AbstractController
      */
     public function validerPermission($id) {
         $em = $this->getDoctrine()->getManager();
-        $req = "UPDATE `permission` set `state` = 'Validé' WHERE `permission`.`id` = $id;";
+        $req = "UPDATE `permission` set `state` = 'Validé', `state_badge` = '#28a745' WHERE `permission`.`id` = $id;";
         $statement = $em->getConnection()->prepare($req);
         $statement->execute();
         return $this->redirectToRoute('sup_permissions');
@@ -454,9 +454,9 @@ class CongesController extends AbstractController
      * Refuser une permission
      * @Route("/sup_admin/permisRefuser/{id}")
      */
-    public function validPermission($id) {
+    public function refusPermission($id) {
         $em = $this->getDoctrine()->getManager();
-        $req = "UPDATE `permission` set `state` = 'Refusé' WHERE `permission`.`id` = $id;";
+        $req = "UPDATE `permission` set `state` = 'Refusé', `state_badge` = '#dc3545' WHERE `permission`.`id` = $id;";
         $statement = $em->getConnection()->prepare($req);
         $statement->execute();
         return $this->redirectToRoute('sup_permissions');

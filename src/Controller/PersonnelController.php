@@ -107,7 +107,7 @@ class PersonnelController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         // Requête de validation
-        $req = "UPDATE `permission` SET `state` = 'A valider' WHERE `permission`.`id` = $id ;";
+        $req = "UPDATE `permission` SET `state` = 'A valider', `state_badge` = '#007bff' WHERE `permission`.`id` = $id ;";
         $stmt = $em->getConnection()->prepare($req);
         $stmt->execute();
 
@@ -123,7 +123,7 @@ class PersonnelController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         // Requête pour le refus
-        $req = "UPDATE `permission` SET `state` = 'Refusé' WHERE `permission`.`id` = $id;";
+        $req = "UPDATE `permission` SET `state` = 'Refusé', `state_badge` = '#dc3545' WHERE `permission`.`id` = $id;";
         $stmt = $em->getConnection()->prepare($req);
         $stmt->execute();
 
