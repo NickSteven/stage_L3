@@ -93,6 +93,8 @@ class UserController extends AbstractController
             $conge->setUsers($this->getUser());
             $conge->setDateDemande(new \DateTime());
 
+            // affection du couleur de badge en attente
+            $conge->setEtatBadge('#ffc107');
             // on prend les dates du formulaire
             $dFin = $form["date_retour"]->getData();
             $dDebut = $form["date_depart"]->getData();

@@ -53,6 +53,11 @@ class Permission
      */
     public $heure_retour;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $state_badge;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -138,6 +143,18 @@ class Permission
     public function setHeureRetour(\DateTimeInterface $heure_retour): self
     {
         $this->heure_retour = $heure_retour;
+
+        return $this;
+    }
+
+    public function getStateBadge(): ?string
+    {
+        return $this->state_badge;
+    }
+
+    public function setStateBadge(string $state_badge): self
+    {
+        $this->state_badge = $state_badge;
 
         return $this;
     }

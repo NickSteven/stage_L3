@@ -18,6 +18,8 @@ class RegistrationType extends AbstractType
             ->add('prenom')
             ->add('adresse')
             ->add('fonction')
+            ->add('cin')
+            ->add('contact')
             ->add('password', PasswordType::class)
             ->add('confirm_password', PasswordType::class)
         ;

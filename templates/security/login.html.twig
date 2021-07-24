@@ -42,6 +42,9 @@
                         <h4>Se connecter</h4>
                         <p>Veuillez vous connecter pour accéder à l'application</p>
                     </div>
+                    {% if error %}
+                    <div class="alert alert-danger text-center text-white" style="background-color:red;">Veuillez verifier votre information de connexion</div>
+                    {% endif %}
                     <div class="login-form-body">
                         <div class="form-gp">
                             <label for="exampleInputEmail1">Nom d'utilisateur</label>

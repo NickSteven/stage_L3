@@ -56,6 +56,11 @@ class Conges
      */
     public $nb_jours;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $etat_badge;
+
 
     public function __toString()
     {
@@ -147,6 +152,18 @@ class Conges
     public function setNbJours(string $nb_jours): self
     {
         $this->nb_jours = $nb_jours;
+
+        return $this;
+    }
+
+    public function getEtatBadge(): ?string
+    {
+        return $this->etat_badge;
+    }
+
+    public function setEtatBadge(string $etat_badge): self
+    {
+        $this->etat_badge = $etat_badge;
 
         return $this;
     }

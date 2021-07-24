@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Conges;
 use App\Entity\User;
 use App\Repository\CongesRepository;
+use App\Repository\PermissionRepository;
 use App\Entity\Permission;
 use App\Entity\Note;
 use App\Repository\NoteRepository;
@@ -126,7 +127,7 @@ class CongesController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         //mise en place du requête de validation
-        $toValid_query = "UPDATE `conges` SET `etat` = 'A valider' WHERE `conges`.`id` = $id ;";
+        $toValid_query = "UPDATE `conges` SET `etat` = 'A valider' , `etat_badge` = '#007bff' WHERE `conges`.`id` = $id ;";
         $statement = $em->getConnection()->prepare($toValid_query);
 
         $statement->execute();
@@ -309,19 +310,33 @@ class CongesController extends AbstractController
      * Dashboard pour admin
      * @Route("/sup_admin/homepage", name="admin_dash")
      */
-    public function showAccueil(CongesRepository $congesrepo) {
+    public function showAccueil(CongesRepository $congesrepo, PermissionRepository $permisrepo) {
         
 
         $conges = $this->repository->findAll();
         
-        //Regrouper les etats par leur valeur et ensuite les compter
+        // CHART JS CONGES
+        //Regrouper les etats des conges par leur valeur et ensuite les compter
         $conn = $congesrepo->countByEtat();
         $etat=[];
+        $couleur=[];
         $nombres=[];
 
         foreach($conn as $con){
             $etat[] = $con['etat'];
+            $couleur[] = $con['couleur'];
             $nombres[] = $con['nombres']; //'etat' et 'nombre' se trouvent dans dans countByEtat dans CongesRepository
+        }
+
+        // CHART JS PERMISSIONS
+        // On regroupe les state des permissions par leur valeur et ensuite on les compte
+        $perm = $permisrepo->countByState();
+        $state=['state'];
+        $number=['number'];
+
+        foreach($perm as $per){
+            $state[] = $per['state'];
+            $number[] = $per['number'];
         }
 
         //Requête d'affichage de tous les permissions
@@ -338,8 +353,13 @@ class CongesController extends AbstractController
             'tab' => 'bord',
             'conges' => $conges,
             'permissions' => $permissions,
+
             'etat' => json_encode($etat),
-            'nombres' => json_encode($nombres)
+            'couleur' => json_encode($couleur),
+            'nombres' => json_encode($nombres),
+
+            'state' => json_encode($state),
+            'number' => json_encode($number)
         ]);
     }
 

@@ -88,6 +88,16 @@ class User implements UserInterface
      */
     private $notes;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $CIN;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $contact;
+
     public function __construct()
     {
         $this->conges = new ArrayCollection();
@@ -324,6 +334,30 @@ class User implements UserInterface
                 $note->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCIN(): ?string
+    {
+        return $this->CIN;
+    }
+
+    public function setCIN(string $CIN): self
+    {
+        $this->CIN = $CIN;
+
+        return $this;
+    }
+
+    public function getContact(): ?string
+    {
+        return $this->contact;
+    }
+
+    public function setContact(string $contact): self
+    {
+        $this->contact = $contact;
 
         return $this;
     }

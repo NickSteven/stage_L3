@@ -16,20 +16,21 @@
     <!-- Le div pour la statistique sur le dashboard sera ici -->
 
     <div class="row">       
-        <div class="col-5 mt-5">
+        <div class="col-6 mt-5">
             <div class="card">
                 <div class="card-body">
-                    <h1>Dashboard1</h1>
-
+                    <!--Chart pour congés -->
+                    <canvas id="ChartConge"></canvas>
                     
                 </div>
             </div>
         </div>
-        <div class="col-7 mt-5">
+        <div class="col-6 mt-5">
             <div class="card">
                 <div class="card-body">
-                    <!-- id contenant le donut chart-->
-                    <canvas id="myChart"></canvas>
+                    <!--Chart pour permission-->
+                    <canvas id="ChartPermission"></canvas>
+                    
                   </div>  
             
         </div>
@@ -140,16 +141,42 @@
         } );
     </script>
     <script type="text/javascript" src="{{ asset('js/loader.js') }}"></script>
-    
+    <!-- Chart pour congés -->
         <script>     
-            var ctx = document.getElementById('myChart');
+            var ctx = document.getElementById('ChartConge');
             var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: {{ etat|raw }},
                     datasets: [{
-                        label: 'Statistiques de demande',
+                        label: 'Statistiques de demande de conges',
                         data: {{ nombres|raw }},
+                        backgroundColor: {{ couleur|raw }},
+                        borderColor: ['#007bff', '#ffc107', '#dc3545', '#28a745'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+        </script>
+
+        <!-- Chart pour permission -->
+        <script>     
+            var ctx = document.getElementById('ChartPermission');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: {{ state|raw }},
+                    datasets: [{
+                        label: 'Statistiques de demande de permission',
+                        data: {{ number|raw }},
                         backgroundColor: ['#007bff', '#ffc107', '#dc3545', '#28a745'],
                         borderColor: ['#007bff', '#ffc107', '#dc3545', '#28a745'],
                         borderWidth: 1
@@ -165,7 +192,6 @@
             });
 
         </script>
-    
 
     {% endblock %}        
         

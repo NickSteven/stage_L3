@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\Soldes;
 use App\Entity\User;
 use App\Form\RegistrationType;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {	
@@ -85,8 +86,12 @@ class SecurityController extends AbstractController
     /**
      * @Route("/connexion", name="security_login")
      */
-    public function login(){
-    	return $this->render('security/login.html.twig');
+    public function login(AuthenticationUtils $utils){
+
+      $error = $utils->getLastAuthenticationError();
+    	return $this->render('security/login.html.twig', [
+          'error' => $error !== null
+       ]);
       
       
     }
