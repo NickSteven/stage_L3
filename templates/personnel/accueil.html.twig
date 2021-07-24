@@ -89,17 +89,18 @@
                         <table id="conges" class="table text-center table-striped table-bordered" style="width:100%">
                         <thead style="background-color:#444444">
                             <tr style="color:white">
-                                <th><i class="fa fa-calendar-minus-o"></i> Date de demande</th>
                                 <th><i class="fa fa-user"></i> Demandeur</th>
-                                <th><i class="fa fa-info"></i> Etat du demande</th>
+                                <th><i class="fa fa-calendar-minus-o"></i> Date de demande</th>
+                                <th><i class="fa fa-info"></i> Etat</th>
                             </tr>
                         </thead>
                         
                         <tbody>
                             {% for conge in conges %}
                             <tr>
-                                <td>{{ conge.date_demande |date("d/m/Y")}}</td>
                                 <td>{{ conge.prenom }}</td>
+                                <td>{{ conge.date_demande |date("d/m/Y")}}</td>
+                                
                                 <td>
                                     {% if conge.etat == "En attente" %}
                                         <span class="badge badge-waring" style="background-color:#ffc107">En attente</span>
@@ -129,17 +130,17 @@
                         <table id="permissions" class="table text-center table-striped table-bordered" style="width:100%">
                         <thead style="background-color:#444444">
                             <tr style="color:white">
-                                <th><i class="fa fa-calendar-minus-o"></i> Date de permission</th>
                                 <th><i class="fa fa-user"></i> Demandeur</th>
-                                <th><i class="fa fa-info"></i> Etat du demande</th>
+                                <th><i class="fa fa-calendar-minus-o"></i> Date de permission</th>
+                                <th><i class="fa fa-info"></i> Etat</th>
                             </tr>
                         </thead>
                         
                         <tbody>
                             {% for permission in permissions %}
                             <tr>
+                                <td>{{ permission.prenom }}</td>
                                 <td>{{ permission.date_demande |date("d/m/Y")}}</td>
-                                <td>{{ permission.username }}</td>
                                 <td>
                                     {% if permission.state == "En attente" %}
                                         <span class="badge badge-waring" style="background-color:#ffc107">En attente</span>

@@ -49,7 +49,7 @@ class PermissionRepository extends ServiceEntityRepository
     */
     public function countByState(){
         $query = $this->createQueryBuilder('a')
-            ->select('a.state as state, COUNT(a) as number')
+            ->select('a.state as state, a.state_badge as color, COUNT(a) as number')
             ->groupBy('state');
             ;
         return $query->getQuery()->getResult();

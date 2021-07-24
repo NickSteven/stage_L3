@@ -50,7 +50,7 @@ class CongesController extends AbstractController
 
         //Requête d'affichage de tous les permissions
 
-        $RAW_QUERY = "SELECT date_demande, state, username from permission, user where user.id = permission.users_id;";
+        $RAW_QUERY = "SELECT date_demande, state, prenom from permission, user where user.id = permission.users_id;";
 
         $statement = $em->getConnection()->prepare($RAW_QUERY);
         $statement->execute();
@@ -313,7 +313,7 @@ class CongesController extends AbstractController
     public function showAccueil(CongesRepository $congesrepo, PermissionRepository $permisrepo) {
         
 
-        $conges = $this->repository->findAll();
+        //$conges = $this->repository->findAll();
         
         // CHART JS CONGES
         //Regrouper les etats des conges par leur valeur et ensuite les compter
@@ -331,20 +331,28 @@ class CongesController extends AbstractController
         // CHART JS PERMISSIONS
         // On regroupe les state des permissions par leur valeur et ensuite on les compte
         $perm = $permisrepo->countByState();
-        $state=['state'];
+        $state = ['state'];
+        $color = ['color'];
         $number=['number'];
 
         foreach($perm as $per){
             $state[] = $per['state'];
+            $color[] = $per['color'];
             $number[] = $per['number'];
         }
+        $em = $this->getDoctrine()->getManager();
+        //Requête d'affichage de tous les congés
+        $reqCong = "SELECT prenom, date_demande, etat FROM conges, user where user.id = conges.users_id;";
+        $stmt = $em->getConnection()->prepare($reqCong);
+        $stmt->execute();
+        $conges = $stmt->fetchAll();
+
 
         //Requête d'affichage de tous les permissions
-        $em = $this->getDoctrine()->getManager();
 
-        $req = "SELECT date_demande, state, username from permission, user where user.id = permission.users_id;";
+        $reqPerm = "SELECT date_demande, state, prenom from permission, user where user.id = permission.users_id;";
 
-        $statement = $em->getConnection()->prepare($req);
+        $statement = $em->getConnection()->prepare($reqPerm);
         $statement->execute();
 
         $permissions = $statement->fetchAll();
@@ -359,6 +367,7 @@ class CongesController extends AbstractController
             'nombres' => json_encode($nombres),
 
             'state' => json_encode($state),
+            'color' => json_encode($color),
             'number' => json_encode($number)
         ]);
     }

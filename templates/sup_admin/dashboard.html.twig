@@ -47,21 +47,17 @@
                         <table id="conges" class="table text-center table-striped table-bordered" style="width:100%">
                         <thead style="background-color:#444444">
                             <tr style="color:white">
-                                <th>Date de demande</th>
-                                <th>Date de départ</th>
-                                <th>Date de retour</th>
-                                <th>Motif</th>
-                                <th>Statut</th>
+                                <th><i class="fa fa-user"></i> Demandeur</th>
+                                <th><i class="fa fa-calendar-minus-o"></i> Date de demande</th>
+                                <th><i class="fa fa-info"></i> Etat</th>
                             </tr>
                         </thead>
                         
                         <tbody>
                             {% for conge in conges %}
                             <tr>
+                                <td>{{ conge.prenom }}</td>
                                 <td>{{ conge.date_demande |date("d/m/Y")}}</td>
-                                <td>{{ conge.date_depart |date("d/m/Y")}}</td>
-                                <td>{{ conge.date_retour |date("d/m/Y")}}</td>
-                                <td>{{ conge.motif }}</td>
                                 <td>
                                     {% if conge.etat == "En attente" %}
                                         <span class="badge badge-waring" style="background-color:#ffc107">En attente</span>
@@ -91,17 +87,17 @@
                         <table id="permissions" class="table text-center table-striped table-bordered" style="width:100%">
                         <thead style="background-color:#444444">
                             <tr style="color:white">
-                                <th>Date de permission</th>
-                                <th>Demandeur</th>
-                                <th>Etat du demande</th>
+                                <th><i class="fa fa-user"></i> Demandeur</th>
+                                <th><i class="fa fa-calendar-minus-o"></i> Date de permission</th>
+                                <th><i class="fa fa-info"></i> Etat</th>
                             </tr>
                         </thead>
                         
                         <tbody>
                             {% for permission in permissions %}
                             <tr>
-                                <td>{{ permission.date_demande |date("d/m/Y")}}</td>
-                                <td>{{ permission.username }}</td>
+                                <td>{{ permission.prenom }}</td>
+                                <td>{{ permission.date_demande |date("d/m/Y")}}</td>                               
                                 <td>
                                     {% if permission.state == "En attente" %}
                                         <span class="badge badge-waring" style="background-color:#ffc107">En attente</span>
@@ -177,8 +173,8 @@
                     datasets: [{
                         label: 'Statistiques de demande de permission',
                         data: {{ number|raw }},
-                        backgroundColor: ['#007bff', '#ffc107', '#dc3545', '#28a745'],
-                        borderColor: ['#007bff', '#ffc107', '#dc3545', '#28a745'],
+                        backgroundColor: {{ color|raw }},
+                        borderColor: {{ color|raw }},
                         borderWidth: 1
                     }]
                 },
