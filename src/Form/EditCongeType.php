@@ -15,8 +15,8 @@ class EditCongeType extends AbstractType
     {
         $builder
             //->add('date_demande')
-            ->add('date_depart', DateType::class)
-            ->add('date_retour')
+            ->add('date_depart', DateType::class, ['widget' => 'single_text',])
+            ->add('date_retour', DateType::class, ['widget' => 'single_text',])
             ->add('motif')
             ->add('Enregistrer', SubmitType::class)
         ;

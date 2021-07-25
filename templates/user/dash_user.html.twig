@@ -1,8 +1,53 @@
-{% extends 'base_user.html.twig' %}
+{% extends 'base_user_dash.html.twig' %}
 {% block title %}Accueil{% endblock %}
 {% block body %}
 
 <div class="main-content-inner">
+    <div class="sidebar-menu">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <a href="index.html"><img src="{{ asset('images/logo/logo_assisteo.png') }}" alt="logo"></a>
+                </div>
+
+                <div class="main-menu">
+                    <div class="menu-inner">
+                    <nav>
+                    <ul class="metismenu" id="menu">
+                    <li class="active">
+                                <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-info"></i><span>Vos solde congés</span></a>
+                            </li>
+        <div class="col-md-3 mt-4">
+    
+            <div class="card" style="width: 190px; height:150px;">
+                <div class="card-body" style="background-color: #28a745;">
+                jakjkjzklkld,k
+                </div>
+            </div>
+        </div>
+
+         <div class="col-md-3 mt-4">
+    
+            <div class="card" style="width: 190px; height:150px;">
+                <div class="card-body" style="background-color: #007bff;"></div>
+            </div>
+        </div>
+
+         <div class="col-md-3 mt-4">
+    
+            <div class="card" style="width: 190px; height:150px; backgroundcolor: red;">
+                <div class="card-body" style="background-color: #dc3545;"></div>
+            </div>
+        </div>
+            
+
+
+                    </ul>
+                    </nav>
+                    </div>
+                </div>
+
+            </div>
+    </div>
 
     <div class="row">
 
@@ -64,8 +109,8 @@
     </div>
 
     <!-- Début tableau congé -->
-    <div class="row">
-    <div class="col-lg-6 mt-5">
+    
+    <div class="col-lg-12 mt-5">
         <div class="card">
             <div class="card-body">
 
@@ -122,11 +167,11 @@
     <!-- Fin tableau congé -->
 
     
-
+    <hr style="border: 1px solid;">
 
 
     
-        <div class="col-lg-6 mt-5">
+        <div class="col-lg-12 mt-5">
             <div class="card">
                 <div class="card-body">
                     {% for alert in app.flashes('permission_success') %}
@@ -176,7 +221,7 @@
                                 
                 </div>
         </div>
-        </div>
+        
         
         </div>
     
