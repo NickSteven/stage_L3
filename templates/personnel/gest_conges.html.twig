@@ -23,9 +23,9 @@
                                             <thead class="text-uppercase bg-secondary">
                                                 <tr class="text-white">
                                                     <th scope="col">Demandeur</th>
-                                                    <th scope="col">Date de départ</th>
-                                                    <th scope="col">Date de retour</th>
-                                                    <th scope="col">Nombre de jours demandés</th>
+                                                    <th scope="col">Date départ</th>
+                                                    <th scope="col">Date retour</th>
+                                                    <th scope="col">Nombre de jours</th>
                                                     <th scope="col">Motif</th>
                                                     <th scope="col">Actions</th>
                                                 </tr>
@@ -43,11 +43,12 @@
                                                     <td>{{ conge.motif }}</td>
                                                     
                                                     <td>
-
-                                                    <a href="javascript:void(0);" class="btn btn-info valid" data-idcon="{{ conge.id }}" data-nb="{{ conge.nb_jours }}" data-us="{{ conge.users_id }}">Valider</a>
-
-                                                    <a href="javascript:void(0);" class="btn btn-danger delete" data-idconge="{{ conge.id }}">Refuser</a>
                                                     
+                                                    <a href="javascript:void(0);" class="btn btn-info btn-md valid" data-idcon="{{ conge.id }}" data-nb="{{ conge.nb_jours }}" data-us="{{ conge.users_id }}"><i class="ti-check"></i></a>
+                                                    <a href="javascript:void(0);" class="btn btn-danger btn-md delete" data-idconge="{{ conge.id }}"><i class="ti-close"></i></a>
+                                                    
+                                                    </td>
+                                                    <td>
                                                     </td>
                                                     
                                                 </tr>

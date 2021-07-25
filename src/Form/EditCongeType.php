@@ -6,6 +6,7 @@ use App\Entity\Conges;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class EditCongeType extends AbstractType
@@ -14,7 +15,7 @@ class EditCongeType extends AbstractType
     {
         $builder
             //->add('date_demande')
-            ->add('date_depart')
+            ->add('date_depart', DateType::class)
             ->add('date_retour')
             ->add('motif')
             ->add('Enregistrer', SubmitType::class)
