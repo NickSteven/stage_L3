@@ -20,8 +20,9 @@
         <div class="col-md-3 mt-4">
     
             <div class="card" style="width: 190px; height:150px;">
-                <div class="card-body" style="background-color: #28a745;">
-                <h1 style="color:white;">{{ soldes.initial }}</h1>
+                <div class="card-body" style="background-image: linear-gradient(to right, green, #06b287, #3de5bb);">
+                <p style="color:white; display:flex; justify-content:center">Soldes affecté:</p>
+                <h1 style="color:white; display:flex; justify-content:center">{{ soldes.initial }}</h1>
                 </div>
             </div>
         </div>
@@ -29,8 +30,9 @@
          <div class="col-md-3 mt-4">
     
             <div class="card" style="width: 190px; height:150px;">
-                <div class="card-body" style="background-color: #007bff;">
-                <h1 style="color:white;">{{ soldes.consomme }}</h1>
+                <div class="card-body" style="background-image: linear-gradient(to right, blue, #4e4efd, #6b8eea);">
+                <p style="color:white; display:flex; justify-content:center">Soldes consommés:</p>
+                <h1 style="color:white; display:flex; justify-content:center">{{ soldes.consomme }}</h1>
                 </div>
             </div>
         </div>
@@ -38,8 +40,9 @@
          <div class="col-md-3 mt-4">
     
             <div class="card" style="width: 190px; height:150px; backgroundcolor: red;">
-                <div class="card-body" style="background-color: #dc3545;">
-                <h1 style="color:white;">{{ soldes.restant }}</h1>
+                <div class="card-body" style="background-image: linear-gradient(to right, red, #d95950, #f28b8b);">
+                <p style="color:white; display:flex; justify-content:center">Soldes restants:</p>
+                <h1 style="color:white; display:flex; justify-content:center">{{ soldes.restant }}</h1>
                 </div>
             </div>
         </div>
@@ -99,12 +102,12 @@
                         <div class="tst-item">
                             
                             <div class="tstu-content">
-                                <h2 style="color:white">{{ note.titre }}</h2>
+                                <h2 style="color:white"><u>{{ note.titre }}</u></h2>
                                 <br>
                                 <br>
                                 <h3 style="color: white;">{{ note.contenu }}</h3>
                                 <br>
-                                <span class="profsn">Publié par {{ note.prenom }} le : {{ note.publication_date|date('d/m/Y/')}}</span>
+                                <span class="profsn">Publié par {{ note.prenom }} le : {{ note.publication_date|date('d/m/Y')}}</span>
                                 
                             </div>
                         </div>
@@ -125,8 +128,8 @@
             <div class="card-body">
 
                 {% for alert in app.flashes('conge_success') %}
-                        <div class="alert alert-success alert-dismissible fade show col-10 mt-3" role="alert">
-                                {{ alert }}
+                        <div class="alert alert-success alert-dismissible fade show col-12 mt-3" style="background-color: #28a745;" role="alert">
+                                <span style="display:flex; justify-content:center; color:white"> {{ alert }}</span>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span class="fa fa-times"></span>
                                 </button>
@@ -152,7 +155,17 @@
                                                 <td>{{ conges.date_depart | date("d/m/Y") }}</td>
                                                 <td>{{ conges.date_retour | date("d/m/y") }}</td>
                                                 <td>{{ conges.motif}}</td>
-                                                <td>{{ conges.etat }}</td>
+                                                <td>
+                                                {% if conges.etat == "En attente" %}
+                                                <span class="badge badge-waring" style="background-color:#ffc107">En attente</span>
+                                                {% elseif conges.etat == "A valider" %}
+                                                    <span class="badge badge-primary" style="background-color:#007bff">A valider</span>
+                                                {% elseif conges.etat == "Refusé" %}
+                                                    <span class="badge badge-danger" style="background-color:#dc3545">Refusé</span>
+                                                {% elseif conges.etat == "Validé" %}
+                                                <span class="badge badge-success" style="background-color:#28a745">Validé</span>
+                                                {% endif %}
+                                                </td>
                                                 <td>
                                                     {% if conges.etat == "En attente" %}
                                                     <a href="/conge/editer/{{ conges.id }}" class="btn btn-info">M</a>
@@ -185,8 +198,8 @@
             <div class="card">
                 <div class="card-body">
                     {% for alert in app.flashes('permission_success') %}
-                            <div class="alert alert-success alert-dismissible fade show col-10 mt-3" role="alert">
-                                    {{ alert }}
+                            <div class="alert alert-success alert-dismissible fade show col-12 mt-3" style="background-color: #28a745;" role="alert">
+                                    <span style="display:flex; justify-content:center; color:white">{{ alert }}</span>
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span class="fa fa-times"></span>
                                     </button>
@@ -208,11 +221,21 @@
                                             {% for permission in permission %}
                                             <tbody>
                                                 <tr>
-                                                    <th>{{ permission.date_demande | date("d/m/Y") }}</th>
-                                                    <th>{{ permission.date_permission | date("d/m/Y") }}</th>
-                                                    <th>{{ permission.sujet }}</th>
-                                                    <th>{{ permission.state }}</th>
-                                                    <th>
+                                                    <td>{{ permission.date_demande | date("d/m/Y") }}</td>
+                                                    <td>{{ permission.date_permission | date("d/m/Y") }}</th>
+                                                    <td>{{ permission.sujet }}</td>
+                                                    <td>
+                                                    {% if permission.state == "En attente" %}
+                                                    <span class="badge badge-waring" style="background-color:#ffc107">En attente</span>
+                                                    {% elseif permission.state == "A valider" %}
+                                                        <span class="badge badge-primary" style="background-color:#007bff">A valider</span>
+                                                    {% elseif permission.state == "Refusé" %}
+                                                        <span class="badge badge-danger" style="background-color:#dc3545">Refusé</span>
+                                                    {% elseif permission.state == "Validé" %}
+                                                    <span class="badge badge-success" style="background-color:#28a745">Validé</span>
+                                                    {% endif %}
+                                                    </td>
+                                                    <td>
                                                         {% if permission.state == "En attente" %}
                                                         <a href="/permission/editer/{{ permission.id }}" class="btn btn-info">M</a>
                                                         <a href="javascript:void(0);" class="btn btn-danger supprimer" data-idper="{{ permission.id }}">R</a>
@@ -220,8 +243,10 @@
                                                         <p>Vu par l'administrateur, veuillez attendre</p>
                                                         {% elseif permission.state == "Validé" %}
                                                         <p>Parmission accordée</p>
+                                                        {% elseif permission.state == "Refusé" %}
+                                                        <p>Aucune action à faire</p>
                                                         {% endif %}
-                                                    </th>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                             {% endfor %}

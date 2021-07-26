@@ -79,7 +79,10 @@
                                     </li>
                                     {% else %}
                                     <li>
-                                        <span style="color: #fff;">Veulliez demander à l'administrateur pour activer les demandes</span>
+                                        <p style="color: #fff;"><i class="fa fa-warning"></i> Veulliez demander à l'administrateur pour activer les demandes </p>
+                                    </li>
+                                    <li>
+
                                     </li>
                                     {% endif %}
 
@@ -93,15 +96,19 @@
                     </div>
                     
                     <!-- nav and search button -->
-                    <div class="col-md-3.999999999999999999999999 clearfix" style="margin-left: 150px">
+                    {% if app.user.avoir_solde == 1 %}
+                    <div class="col-md-2.999999999999999999999999 clearfix" style="margin-left: 150px">
                         <div class="search-box col-lg-10">
                             <button class="btn btn-secondary dropdown-toogle" type="button" data-toggle="dropdown" style="background-color: #303641"><i class="ti-user"></i>  {{ app.user.username }}</button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" sytle="text-decoation: none" href="#">Mon compte</a>
-                                            <a class="dropdown-item" href="{{ path('security_logout') }}">Se déconnecter</a>
+                                            
+                                            <a class="dropdown-item" href="{{ path('security_logout') }}">Deconnexion</a>
                                         </div>
                         </div>
                     </div>
+                    {% else %}
+                    <a class"button" href=" {{ path('security_logout')}} " style="color:white"><i class="ti-na"></i> Deconnexion</a>
+                    {% endif %} 
                     <!-- mobile_menu -->
                     <div class="col-12 d-block d-lg-none">
                         <div id="mobile_menu"></div>
