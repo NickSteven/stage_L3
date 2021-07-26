@@ -4,6 +4,7 @@
 
 <div class="main-content-inner">
     <div class="sidebar-menu">
+    {% for soldes in solde %}
             <div class="sidebar-header">
                 <div class="logo">
                     <a href="index.html"><img src="{{ asset('images/logo/logo_assisteo.png') }}" alt="logo"></a>
@@ -20,7 +21,7 @@
     
             <div class="card" style="width: 190px; height:150px;">
                 <div class="card-body" style="background-color: #28a745;">
-                jakjkjzklkld,k
+                <h1 style="color:white;">{{ soldes.initial }}</h1>
                 </div>
             </div>
         </div>
@@ -28,14 +29,18 @@
          <div class="col-md-3 mt-4">
     
             <div class="card" style="width: 190px; height:150px;">
-                <div class="card-body" style="background-color: #007bff;"></div>
+                <div class="card-body" style="background-color: #007bff;">
+                <h1 style="color:white;">{{ soldes.consomme }}</h1>
+                </div>
             </div>
         </div>
 
          <div class="col-md-3 mt-4">
     
             <div class="card" style="width: 190px; height:150px; backgroundcolor: red;">
-                <div class="card-body" style="background-color: #dc3545;"></div>
+                <div class="card-body" style="background-color: #dc3545;">
+                <h1 style="color:white;">{{ soldes.restant }}</h1>
+                </div>
             </div>
         </div>
             
@@ -47,55 +52,60 @@
                 </div>
 
             </div>
+            {% endfor %}
     </div>
 
     <div class="row">
 
 
-        <div class="col-lg-3 mt-5">
+                <!--<div class="col-lg-3 mt-5">
                         <div class="card">
                             <div class="card-body" style="height: 356px;">
-                            {% for soldes in solde %}
+                            
                                 <h4 class="header-title">Solde congés</h4>
                                 
                                 <button type="button" class="btn btn-success btn-lg btn-block">
                                     Votre solde :
                                     
-                                    <span class="badge badge-light">{{ soldes.initial }}</span>
+                                    <span class="badge badge-light"></span>
                                     
                                 </button>
                                 <button type="button" class="btn btn-primary btn-lg btn-block">
                                     Consommés :
                                     
-                                    <span class="badge badge-light">{{ soldes.consomme }}</span>
+                                    <span class="badge badge-light"></span>
                                     
                                 </button>
                                 <button type="button" class="btn btn-danger btn-lg btn-block">
                                     Restants :
                                     
-                                    <span class="badge badge-light">{{ soldes.restant }}</span>
+                                    <span class="badge badge-light"></span>
                                     
                                 </button>
-                                {% endfor %}
+                                
                                 
                             </div>
                         </div>
-                    </div>
+                </div>-->
 
 
 
-        <div class="col-lg-9 mt-5">
+        <div class="col-lg-12 mt-5">
             <div class="card">
-                <div class="card-body bg1">
-                    <h4 class="header-title text-white">Notes internes</h4>
+                <div class="card-body" style="background-color: #1d233d;">
+                    <h1 class="header-title text-white" style="display:flex; justify-content:center"><i class="ti-pencil-alt"></i>&nbspNotes internes</h1>
                     <div class="testimonial-carousel owl-carousel">
                         {% for note in notes %}
                         <div class="tst-item">
                             
                             <div class="tstu-content">
-                                <h4 class="tstu-name">{{ note.titre }}</h4>
-                                <span class="profsn">{{ note.prenom }}</span>
-                                <p>{{ note.contenu }}</p>
+                                <h2 style="color:white">{{ note.titre }}</h2>
+                                <br>
+                                <br>
+                                <h3 style="color: white;">{{ note.contenu }}</h3>
+                                <br>
+                                <span class="profsn">Publié par {{ note.prenom }} le : {{ note.publication_date|date('d/m/Y/')}}</span>
+                                
                             </div>
                         </div>
                         {% endfor %}
@@ -272,6 +282,7 @@
 {% block javascripts %}
 <script src="{{ asset('jss/jquery-3.4.1.js') }}"></script>
 <script src="{{ asset('jss/bootstrap.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/chart.min.js') }}"></script>
 {{ parent() }}
 <script type="text/javascript">
 $(document).ready(function() {
