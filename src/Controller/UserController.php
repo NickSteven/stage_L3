@@ -36,6 +36,7 @@ class UserController extends AbstractController
     public function TableauDeBord()
     {
         $user = $this->getUser(); //Prend l'id de chaque utilisateur connecté
+        //dd($user->getId());
         $permission = $this->getDoctrine()->getRepository(Permission::class)->findByUsers($user);
         $conges = $this->getDoctrine()->getRepository(Conges::class)->findByUsers($user);
         $soldes = $this->getDoctrine()->getRepository(Soldes::class)->findByUser($user);

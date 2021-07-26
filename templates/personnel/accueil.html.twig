@@ -3,6 +3,7 @@
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('datatables/css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('datatables/css/dataTables.bootstrap4.min.css') }}">
+    <script type="text/javascript" src="{{ asset('js/chart.min.js') }}"></script>
 
 
 {% endblock %}
@@ -13,68 +14,37 @@
 
 
     <!-- Le div pour la statistique sur le dashboard sera ici -->
-    <div class="row">
+
     
 
-        <div class="col-md-3 mt-5">
+        
+    <div class="row">       
+        <div class="col-6 mt-5">
             <div class="card">
-                <div class="seo-fact sbg1">
-                    <div class="p-4 d-flex justify-content-between align-items-center"  style="background-color:#f0c63f;">
-                        <div class="seofct-icon"><i class="ti-flag"></i>En<span style="color:#f0c63f;">_</span>attente</div>
-                        {% for at in atte %}
-                        <h2>{{ at.nbAttente }}</h2>
-                        {% endfor %}
-                        <span style="color: #f0c63f;">Something</span>
-                    </div>
+                <div class="card-body">
+                    <!--Chart pour congés -->
+                    <canvas id="ChartConge"></canvas>
                     
                 </div>
             </div>
         </div>
-
-        <div class="col-md-3 mt-5">
+        <div class="col-6 mt-5">
             <div class="card">
-                <div class="seo-fact sbg1">
-                    <div class="p-4 d-flex justify-content-between align-items-center">
-                        <div class="seofct-icon"><i class="ti-ticket"></i>A<span style="color:#5b6bf4;">a</span>valider</div>
-                        {% for aval in avali %}
-                        <h2>{{ aval.nbAvalider }}</h2>
-                        {% endfor %}
-                        <span style="color: #5b6bf4;">Something</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mt-5">
-            <div class="card">
-                <div class="seo-fact sbg2">
-                    <div class="p-4 d-flex justify-content-between align-items-center">
-                        <div class="seofct-icon"><i class="ti-check"></i> Accepté</div>
-                        {% for valid in valid %}
-                        <h2>{{ valid.nbValid}}</h2>
-                        {% endfor %}
-                        <span style="color: #1bd4a6;">Something</span>
-                    </div>
+                <div class="card-body">
+                    <!--Chart pour permission-->
+                    <canvas id="ChartPermission"></canvas>
                     
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mt-5">
-            <div class="card">
-                <div class="seo-fact sbg2">
-                    <div class="p-4 d-flex justify-content-between align-items-center" style="background-color:#db5e56;">
-                        <div class="seofct-icon"><i class="ti-close"></i> Refusé</div>
-                        {% for refus in refus %}
-                        <h2>{{ refus.nbRefus }}</h2>
-                        {% endfor %}
-                        <span style="color: #db5e56;">Something</span>
-                    </div>
-                    
-                </div>
-            </div>
+                  </div>  
+            
         </div>
     </div>
+    </div>
+        
+
+        
+
+        
+    
 
         
 
@@ -200,30 +170,58 @@
         } );
     </script>
     <script type="text/javascript" src="{{ asset('js/loader.js') }}"></script>
-    <script type="text/javascript">
-        google.charts.load("current", {packages:["corechart"]});
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['', ''],
+    
 
-          //Eto ny boucle no mipetraka
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
-        ]);
+    <script>     
+            var ctx = document.getElementById('ChartConge');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ etat|raw }},
+                    datasets: [{
+                        label: 'Statistiques de demande de conges',
+                        data: {{ nombres|raw }},
+                        backgroundColor: {{ couleur|raw }},
+                        borderColor: {{ couleur|raw }},
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
 
-        var options = {
-          pieHole: 0.5,
-          chartArea:{left:60,top:0,width:'100%',height:'100%'}
-        };
+        </script>
 
-        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-        chart.draw(data, options);
-      }
-    </script>
+        <!-- Chart pour permission -->
+        <script>     
+            var ctx = document.getElementById('ChartPermission');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: {{ state|raw }},
+                    datasets: [{
+                        label: 'Statistiques de demande de permission',
+                        data: {{ number|raw }},
+                        backgroundColor: {{ color|raw }},
+                        borderColor: {{ color|raw }},
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+        </script>
     
 
     {% endblock %}        

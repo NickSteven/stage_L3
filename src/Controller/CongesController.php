@@ -39,7 +39,7 @@ class CongesController extends AbstractController
     /**
      * @Route("/" , name="accueil_show")
      */
-    public function dashboard(Request $request): Response {
+    public function dashboard(Request $request, CongesRepository $congesrepo, PermissionRepository $permisrepo): Response {
         $em = $this->getDoctrine()->getManager();
         //Requête d'affichage de tous les conges
         $conges = $this->repository->findAll();
@@ -57,7 +57,7 @@ class CongesController extends AbstractController
 
         $permissions = $statement->fetchAll();
 
-        //Nombre de congés en attente
+        /*Nombre de congés en attente
         $nb_attente = "SELECT count(*) as nbAttente from conges where etat = 'En attente';";
         $attente = $em->getConnection()->prepare($nb_attente);
         $attente->execute();
@@ -79,16 +79,45 @@ class CongesController extends AbstractController
         $nb_refus = "SELECT count(*) as nbRefus from conges where etat = 'Refusé';";
         $refus = $em->getConnection()->prepare($nb_refus);
         $refus->execute();
-        $ref = $refus->fetchAll();
+        $ref = $refus->fetchAll();*/
+        // CHART JS CONGES
+        //Regrouper les etats des conges par leur valeur et ensuite les compter
+        $conn = $congesrepo->countByEtat();
+        $etat=[];
+        $couleur=[];
+        $nombres=[];
+
+        foreach($conn as $con){
+            $etat[] = $con['etat'];
+            $couleur[] = $con['couleur'];
+            $nombres[] = $con['nombres']; //'etat' et 'nombre' se trouvent dans dans countByEtat dans CongesRepository
+        }
+
+        // CHART JS PERMISSIONS
+        // On regroupe les state des permissions par leur valeur et ensuite on les compte
+        $perm = $permisrepo->countByState();
+        $state = ['state'];
+        $color = ['color'];
+        $number=['number'];
+
+        foreach($perm as $per){
+            $state[] = $per['state'];
+            $color[] = $per['color'];
+            $number[] = $per['number'];
+        }
 
         return $this->render('personnel/accueil.html.twig', [
             'tab' => 'bord',
-            'atte' => $att,
-            'avali' => $aval,
-            'valid' => $val,
-            'refus' => $ref,
             'conges' => $conges,
-            'permissions' => $permissions
+            'permissions' => $permissions,
+
+            'etat' => json_encode($etat),
+            'couleur' => json_encode($couleur),
+            'nombres' => json_encode($nombres),
+
+            'state' => json_encode($state),
+            'color' => json_encode($color),
+            'number' => json_encode($number)
         ]);
     }
 
@@ -232,7 +261,7 @@ class CongesController extends AbstractController
         $note = new Note();
         $formNote = $this->createFormBuilder($note)
                     ->add('titre', TextType::class, [
-                            'label' => 'Le titre du note',
+                            'label' => 'Titre du note',
                             'required' => true,
                     ])
                     ->add('contenu', TextareaType::class, [
@@ -262,6 +291,7 @@ class CongesController extends AbstractController
             'note' => 'notes',
             'formNote' => $formNote->createView(),
             'note' => $notes,
+            'no' => 'no'
         ]);
     }
 
@@ -477,6 +507,8 @@ class CongesController extends AbstractController
      * @Route("/sup_admin/personnel", name="sup_personnel")
      */
     public function supPersonnel() {
+
+        //$user = $this->getUser()->getId();
         $employes = $this->getDoctrine()->getRepository(User::class)->findAll();
 
         return $this->render('sup_admin/personnel.html.twig', [
