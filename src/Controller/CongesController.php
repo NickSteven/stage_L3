@@ -413,7 +413,9 @@ class CongesController extends AbstractController
         $statement->execute();
         $conges = $statement->fetchAll();
         return $this->render('/sup_admin/conges.html.twig', [
-            'conges' => $conges
+            'conge' => 'conges',
+            'conges' => $conges,
+
         ]);
     }
 
@@ -473,6 +475,7 @@ class CongesController extends AbstractController
         $statement->execute();
         $permissions = $statement->fetchAll();
         return $this->render('sup_admin/permission.html.twig', [
+            'permission' => 'permissions',
             'permis' => $permissions
         ]);
     }

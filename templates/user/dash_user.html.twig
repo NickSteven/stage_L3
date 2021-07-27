@@ -168,8 +168,8 @@
                                                 </td>
                                                 <td>
                                                     {% if conges.etat == "En attente" %}
-                                                    <a href="/conge/editer/{{ conges.id }}" class="btn btn-info">M</a>
-                                                    <a href="javascript:void(0);" class="btn btn-danger delete" data-idcon="{{ conges.id }}">S</a>
+                                                    <a href="/conge/editer/{{ conges.id }}" class="btn btn-info"><i class="fa fa-pencil-square-o"></i></a>
+                                                    <a href="javascript:void(0);" class="btn btn-danger delete" data-idcon="{{ conges.id }}"><i class="fa fa-trash"></i></a>
                                                     {% elseif conges.etat == "A valider" %}
                                                     <p>En attente d'approbation</p>
                                                     {% elseif conges.etat == "Refusé" %}
@@ -237,8 +237,8 @@
                                                     </td>
                                                     <td>
                                                         {% if permission.state == "En attente" %}
-                                                        <a href="/permission/editer/{{ permission.id }}" class="btn btn-info">M</a>
-                                                        <a href="javascript:void(0);" class="btn btn-danger supprimer" data-idper="{{ permission.id }}">R</a>
+                                                        <a href="/permission/editer/{{ permission.id }}" class="btn btn-info"><i class="fa fa-pencil-square-o"></i></a>
+                                                        <a href="javascript:void(0);" class="btn btn-danger supprimer" data-idper="{{ permission.id }}"><i class="fa fa-trash"></i></a>
                                                         {% elseif permission.state == "A valider" %}
                                                         <p>Vu par l'administrateur, veuillez attendre</p>
                                                         {% elseif permission.state == "Validé" %}
