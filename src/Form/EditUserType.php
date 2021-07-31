@@ -19,6 +19,8 @@ class EditUserType extends AbstractType
             ->add('prenom')
             ->add('fonction')
             ->add('adresse')
+            ->add('cin')
+            ->add('contact')
             ->add('roles', ChoiceType::class, [
                 'choices' => [
                     'Super utilisateur' => 'ROLE_SUPER_ADMIN',

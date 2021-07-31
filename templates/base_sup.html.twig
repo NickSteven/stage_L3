@@ -156,7 +156,7 @@
         <!-- footer area start-->
         <footer>
             <div class="footer-area">
-                <p>© Copyright 2018. All right reserved. Template by <a href="https://colorlib.com/wp/">Colorlib</a>.</p>
+                <p>© Copyright <span id="year"></span>. Tous droits réservés. Par Nick Steven.</p>
             </div>
         </footer>
         <!-- footer area end-->
@@ -182,6 +182,12 @@
     <!-- others plugins -->
     <script src="{{ asset('js/plugins.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
+    <script>
+        var an = document.getElementById("year");
+        var d = new Date();
+        var y = d.getFullYear();
+        an.innerHTML = y;
+    </script>
         {% block javascripts%}
         {% endblock %}
 </body>

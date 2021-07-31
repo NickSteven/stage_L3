@@ -1,0 +1,41 @@
+{% extends 'base_sup.html.twig' %}
+{% block title %}Détail de l'employé{% endblock %}
+{% block body %}
+<div class="main-content-inner">
+    <div class="row">
+        <div class="col-12 mt-5">
+            <div class="card">
+                <div class="card-body">
+                <h1>Informations concernant l'employé</h1>
+                <br>
+                <br>
+                {% for emp in emp %}
+                <h3>Nom:</h3>
+                {{ emp.nom }}
+                <br>
+                <br>
+                <h3>Prénoms:</h3>
+                {{ emp.prenom }}
+                <br>
+                <br>
+                <h3>Adresse:</h3>
+                {{ emp.adresse }}
+                <br>
+                <br>
+                <h3>Fonction:</h3>
+                {{ emp.fonction }}
+                <br>
+                <br>
+                <h3>Numéro CIN:</h3>
+                {{ emp.cin }}
+                <br>
+                <br>
+                <h3>Contact:</h3>
+                {{ emp.contact }}
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

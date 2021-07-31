@@ -239,8 +239,22 @@ class CongesController extends AbstractController
         return $this->redirectToRoute('personnel_show');
     }
 
+    /**
+     * Voir détails concernant l'employé
+     * @Route("admin/voir_employé/{id}", name="voir_employe")
+     */
+    public function voirEmp($id){
+        
+        $emp = $this->getDoctrine()->getRepository(User::class)->findById($id);
 
-    // Affichange conge à valider
+        return $this->render('personnel/voirEmp.html.twig', [
+            'emp' => $emp,
+            'personnel' => 'personnels'
+        ]);
+    }
+
+
+    // Affichage conge à valider
     /**
      * @Route("/conges/final/{etat}", name="con_show")
      * @Method({"POST"})
@@ -408,7 +422,7 @@ class CongesController extends AbstractController
      */
     public function superCongeAvalider() {
         $em = $this->getDoctrine()->getManager();
-        $req = "SELECT conges.id, users_id, date_depart, date_retour,motif, username, nb_jours from conges, user where conges.users_id = user.id and etat = 'A valider';";
+        $req = "SELECT conges.id, users_id, date_depart, date_retour,motif, prenom, nb_jours from conges, user where conges.users_id = user.id and etat = 'A valider';";
         $statement = $em->getConnection()->prepare($req);
         $statement->execute();
         $conges = $statement->fetchAll();
@@ -511,12 +525,31 @@ class CongesController extends AbstractController
      */
     public function supPersonnel() {
 
-        //$user = $this->getUser()->getId();
-        $employes = $this->getDoctrine()->getRepository(User::class)->findAll();
+        $user = $this->getUser()->getId();
+
+        $em = $this->getDoctrine()->getManager();
+        $req = "SELECT id, nom, prenom, adresse, fonction, contact, avoir_solde FROM user where id not like $user;";
+        $stmt = $em->getConnection()->prepare($req);
+        $stmt->execute();
+        $employes = $stmt->fetchAll();
+        //$employes = $this->getDoctrine()->getRepository(User::class)->findAll();
 
         return $this->render('sup_admin/personnel.html.twig', [
             'personnel' => 'personnels',
             'employes' => $employes
+        ]);
+    }
+
+    /**
+     * Voir un personnel
+     * @Route("sup_admin/voir/{id}", name="user_show")
+     */
+    public function showPerso($id){
+        $emp = $this->getDoctrine()->getRepository(User::class)->findById($id);
+
+        return $this->render('sup_admin/showEmp.html.twig', [
+            'emp' => $emp,
+            'personnel' => 'personnels'
         ]);
     }
 
@@ -537,6 +570,7 @@ class CongesController extends AbstractController
             return $this->redirectToRoute('sup_personnel');
         }
         return $this->render('sup_admin/edit_user.html.twig', [
+            'personnel' => 'personnels',
             'userForm' => $formUser->createView()
         ]);
     }

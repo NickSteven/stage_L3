@@ -31,7 +31,14 @@ class PersonnelController extends AbstractController
      */
     public function personnel() {
 
-    	$employes = $this->getDoctrine()->getRepository(User::class)->findAll();
+        $user = $this->getUser()->getId();
+
+        $em = $this->getDoctrine()->getManager();
+        $req = "SELECT id, nom, prenom, adresse, fonction, contact, avoir_solde FROM user where id not like $user;";
+        $stmt = $em->getConnection()->prepare($req);
+        $stmt->execute();
+        $employes = $stmt->fetchAll();
+    	//$employes = $this->getDoctrine()->getRepository(User::class)->findAll();
     	
     	return $this->render('personnel/gest_personnels.html.twig',[
     		'personnel' => 'personnels',
@@ -57,6 +64,7 @@ class PersonnelController extends AbstractController
             return $this->redirectToRoute('personnel_show');
         }
         return $this->render('personnel/edit_user.html.twig', [
+            'personnel' => 'personnels',
             'userForm' => $formUser->createView()
         ]);
         

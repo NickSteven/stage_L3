@@ -25,10 +25,10 @@
                                                 <tr class="text-white">
                                                     <th scope="col">Nom</th>
                                                     <th scope="col">Prénoms</th>
-                                                    <th scope="col">Nom d'utilisateur</th>
                                                     <th scope="col">Adresse</th>
-                                                    <th scope="col">Fonction</th>
                                                     <th scope="col">Actions</th>
+                                                    
+                    
                                                 </tr>
                                             </thead>
 
@@ -37,16 +37,16 @@
                                             <tbody>
                                                 <tr>
                                                     <td>{{ employe.nom }}</th>
-                                                    <td>{{ employe.prenom }}</th>
-                                                    <td>{{ employe.username }}</th>
+                                                    <td>{{ employe.prenom }}</th>                                            
                                                     <td>{{ employe.adresse }}</th>
-                                                    <td>{{ employe.fonction }}</th>
+                                                    
                                                     <td>
+                                                        <a href="{{ path('voir_employe', {id: employe.id} )}}" class="btn btn-info"><i class="ti-eye"></i></a>
                                                         <a href="{{ path('edit_employe', {id: employe.id} )}}" class="btn btn-success"><i class="ti-pencil-alt"></i></a>
 
                                                         <a href="javascript:void(0);" class="btn btn-danger supp" data-userid="{{ employe.id }}"><i class="ti-trash" style="color:white"></i></a>
                                                         {% if employe.avoir_solde == 0 %}
-                                                        <a href="javascript:void(0);" class="btn btn-dark gen" data-usrid="{{ employe.id }}"><i class="ti-plus"></i></a>
+                                                        <a href="javascript:void(0);" class="btn btn-dark gen" data-usrid="{{ employe.id }}"><i class="fa fa-unlock"></i></a>
                                                         {% endif %}
                                                     </td>
                                                 </tr>

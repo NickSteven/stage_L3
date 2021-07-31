@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PermissionRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=PermissionRepository::class)
  */
@@ -40,6 +40,7 @@ class Permission
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\GreaterThanOrEqual(value = "today", message = "Veuillez ne pas insérer une date avant aujourd'hui!")
      */
     public $date_permission;
 

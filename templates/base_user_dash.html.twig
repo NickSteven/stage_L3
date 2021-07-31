@@ -79,7 +79,7 @@
                                     </li>
                                     {% else %}
                                     <li>
-                                        <p style="color: #fff;"><i class="fa fa-warning"></i> Veulliez demander à l'administrateur pour activer les demandes </p>
+                                        <p style="color: #fff;"><i class="fa fa-warning"></i> Veulliez attendre l'administrateur pour activer les demandes </p>
                                     </li>
                                     <li>
 
@@ -139,8 +139,7 @@
     </div>
     <footer>
             <div class="footer-area">
-                <p>© Copyright 2018. All right reserved. Template by <a href="https://colorlib.com/wp/">Colorlib</a>.</p>
-                
+                <p>© Copyright <span id="year"></span>. Tous droits réservés. Par Nick Steven.</p>
             </div>
         </footer>
 {% endif %}
@@ -194,6 +193,12 @@
     <!-- others plugins -->
     <script src="{{ asset('js/plugins.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
+    <script>
+        var an = document.getElementById("year");
+        var d = new Date();
+        var y = d.getFullYear();
+        an.innerHTML = y;
+    </script>
 </body>
 
 </html>
